@@ -2,7 +2,7 @@
 #include "images/push_back_field_400.c"
 #include "images/push_back_skills_field_400.c"
 
-pros::Task confirm_task;
+//pros::Task confirm_task;
 
 lv_obj_t * field_image;
 lv_obj_t * red_right_button;
@@ -29,7 +29,7 @@ lv_obj_t * current_auton_score_label;
 lv_obj_t * current_auton_name_label;
 
 const std::vector<auton_descriptor_t> red_right_autons = {
-    {"mp test 3", "0 points", "path-points-3.txt", autonNone},
+    {"mp test 3", "0 points", "path-points-3.txt", "autonNone"},
     {"Red Right 1", "1 point"},
     {"Auton 2", "5 points"},
     {"Auton 3", "12 points"}

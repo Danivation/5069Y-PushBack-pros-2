@@ -13,10 +13,10 @@ struct auton_descriptor_t {
     std::string name;
     std::string score;
     std::string path_file;
-    void (*callback)();
+    std::string callback_name;
 
-    auton_descriptor_t(const std::string& n, const std::string& s, const std::string& p = "none.txt", void (*cb)() = nullptr)
-        : name(n), score(s), path_file(p), callback(cb) {}
+    auton_descriptor_t(const std::string& n, const std::string& s, const std::string& p = "none.txt", const std::string& cb = "")
+        : name(n), score(s), path_file(p), callback_name(cb) {}
 };
 
 extern int selected_auton_index;
