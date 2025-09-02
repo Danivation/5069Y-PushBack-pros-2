@@ -68,6 +68,18 @@
  * Custom includes go here
  */
 #include "auton.hpp"
+#include "extras.hpp"
+#include "driver.hpp"
+
+
+/**
+ * Robot configuration
+ */
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::MotorGroup left_mg({1, -2, -3});
+pros::MotorGroup right_mg({-4, 5, 6});
+pros::Imu imu_1(7);
+pros::Imu imu_2(8);
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
