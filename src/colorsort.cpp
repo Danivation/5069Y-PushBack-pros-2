@@ -8,6 +8,22 @@ bool ColorLock = false;
  * when it does activate trapdoor after a certain amt of time and for a certain duration (no need for distance sensor, use color sensor's distance)
 **/
 
+pros::Color get_color(pros::Optical* sensor) {
+    float hue = sensor->get_hue();
+
+    if (hue < 30 || hue > 330) {
+        return pros::Color::red;
+    } else if (hue < 90) {
+        return pros::Color::yellow;
+    } else if (hue < 150) {
+        return pros::Color::green;
+    } else if (hue < 270) {
+        return pros::Color::blue;
+    } else {
+        return pros::Color::white;
+    }
+}
+
 const pros::Color SortColor = Color::white;
 int ccount = 0;   // wrong color counter
 int ColorSort()
@@ -37,8 +53,9 @@ int ColorSort()
                 ncount = 0;
                 tcount = 0;
                 pros::Task release1(BlockRelease);
-                // REPLACE THIS with something that says when the block has passed, maybe a redundant check for a new color for more than a few cycles
-                waitUntil(!BlockColor.isNearObject());
+                // REPLACE THIS with something that says when the block has passed,
+                // maybe a redundant check for a new color for more than a few cycles
+                waitUntil(!optical_block.get_proximity() < 50);                                    // TUNE TS
                 ccount = 0;
             }
             pros::delay(3);
@@ -59,13 +76,11 @@ int BlockRelease() {
     pros::delay(300);
     if (!ColorLock) {
         std::cout << "releasing\n";
-        pros::Color DetectedColor = Color::white;
-        if (optical_block.get_hue() < 100) DetectedColor = Color::red;
-        if (optical_block.get_hue() > 100) DetectedColor = Color::blue;
+        pros::Color DetectedColor = get_color(&optical_block);
         ColorStop = true;
-        Intake3.spin(reverse, 12, volt);
-        waitUntil(!BlockColor.isNearObject() || BlockColor.color() != DetectedColor);
-        wait(0.4, sec);
+        intake_front.move_voltage(-12000);
+        waitUntil(!optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
+        pros::delay(400);
         ColorStop = false;
     }
     return 1;

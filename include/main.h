@@ -41,7 +41,7 @@
  */
 #include "pros/apix.h"
 #include "liblvgl/lvgl.h"
-//#include "okapi/api.hpp"
+#include "lemlib/api.hpp"
 
 /**
  * Standard library #includes go here
