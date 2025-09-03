@@ -17,7 +17,7 @@ EXTRA_CFLAGS=
 EXTRA_CXXFLAGS=
 
 # Set to 1 to enable hot/cold linking
-USE_PACKAGE:=1
+USE_PACKAGE:=00
 
 # Add libraries you do not wish to include in the cold image here
 # EXCLUDE_COLD_LIBRARIES:= $(FWDIR)/your_library.a
@@ -30,7 +30,7 @@ IS_LIBRARY:=1
 # same name as what you set LIBNAME to below.
 LIBNAME:=lib5069Ypros
 VERSION:=1.0.0
-EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/main.cpp $(SRCDIR)/auton.cpp
+EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/main.cpp $(SRCDIR)/auton.cpp $(SRCDIR)/driver.cpp $(SRCDIR)/extras.cpp
 # this line excludes opcontrol.c and similar files
 EXCLUDE_SRC_FROM_LIB+=$(foreach file, $(SRCDIR)/main,$(foreach cext,$(CEXTS),$(file).$(cext)) $(foreach cxxext,$(CXXEXTS),$(file).$(cxxext)))
 

@@ -7,11 +7,15 @@
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-    lvgl_auton_selector();
+    //lvgl_auton_selector();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
     left_mg.set_brake_mode_all(pros::MotorBrake::coast);
     right_mg.set_brake_mode_all(pros::MotorBrake::coast);
+    intake_bottom.set_brake_mode(pros::MotorBrake::hold);
+    intake_back.set_brake_mode(pros::MotorBrake::hold);
+    intake_front.set_brake_mode(pros::MotorBrake::hold);
+    intake_top.set_brake_mode(pros::MotorBrake::hold);
 }
 
 /**
@@ -58,6 +62,21 @@ void autonomous() {}
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+/**
+ * Robot configuration
+ */
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+pros::MotorGroup left_mg({8, -9, -10});
+pros::MotorGroup right_mg({-18, 19, 20});
+pros::Imu imu_1(1);
+pros::Imu imu_2(20);
+pros::Motor intake_bottom(-9);
+pros::Motor intake_front(-10);
+pros::Motor intake_back(11);
+pros::Motor intake_top(12);
+pros::Optical optical_block(13);
+
 void opcontrol() {
     pros::Task d_drivetrain_control (DrivetrainControl);
     pros::Task d_intake_control     (IntakeControl);

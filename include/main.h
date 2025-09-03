@@ -71,19 +71,24 @@
 #include "extras.hpp"
 #include "driver.hpp"
 
-
 /**
  * Robot configuration
  */
-pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup left_mg({1, -2, -3});
-pros::MotorGroup right_mg({-4, 5, 6});
-pros::Imu imu_1(7);
-pros::Imu imu_2(8);
-pros::Motor intake_bottom(-9);
-pros::Motor intake_front(-10);
-pros::Motor intake_back(11);
-pros::Motor intake_top(12);
+extern pros::Controller master;
+extern pros::MotorGroup left_mg;
+extern pros::MotorGroup right_mg;
+extern pros::Imu imu_1;
+extern pros::Imu imu_2;
+extern pros::Motor intake_bottom;
+extern pros::Motor intake_front;
+extern pros::Motor intake_back;
+extern pros::Motor intake_top;
+extern pros::Optical optical_block;
+
+#define waitUntil(condition)                                                   \
+  do {                                                                         \
+    pros::delay(5);                                                      \
+  } while (!(condition))
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
