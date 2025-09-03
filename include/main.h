@@ -85,6 +85,8 @@ extern pros::Motor intake_back;
 extern pros::Motor intake_top;
 extern pros::Optical optical_block;
 
+extern lemlib::Chassis chassis;
+
 #define waitUntil(condition)                                                   \
   do {                                                                         \
     pros::delay(5);                                                      \
