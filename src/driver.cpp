@@ -24,6 +24,9 @@ void DrivetrainControl() {
 
 void IntakeControl() {
     while (true) {
+        if (INTAKE_TO_STORAGE) {
+            
+        }
         pros::delay(10);
     }
 }

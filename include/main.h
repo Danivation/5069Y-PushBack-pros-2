@@ -80,6 +80,10 @@ pros::MotorGroup left_mg({1, -2, -3});
 pros::MotorGroup right_mg({-4, 5, 6});
 pros::Imu imu_1(7);
 pros::Imu imu_2(8);
+pros::Motor intake_bottom(-9);
+pros::Motor intake_front(-10);
+pros::Motor intake_back(11);
+pros::Motor intake_top(12);
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
