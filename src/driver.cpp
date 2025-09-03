@@ -16,8 +16,8 @@ void DrivetrainControl() {
     while (true) {
         throttle = DeadBand(THROTTLE_AXIS, 5);
         turn = DeadBand(TURN_AXIS, 5);
-        left_mg.move(throttle - turn);
-        right_mg.move(throttle + turn);
+        left_mg.move(throttle + turn);
+        right_mg.move(throttle - turn);
         pros::delay(10);
     }
 }

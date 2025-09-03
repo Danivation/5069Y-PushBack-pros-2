@@ -2,6 +2,10 @@
 
 ASSET(testpath_txt);
 
+void odom_test() {
+    chassis.setPose(0, 0, 0);
+}
+
 void pure_pursuit_test() {
     // set chassis pose
     chassis.setPose(0, 0, 0);
