@@ -17,8 +17,8 @@ pros::Optical optical_block(13);
 pros::Rotation horizontal_rotation(15);
 pros::Rotation vertical_rotation(16);
 
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -0.8);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -4.75);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -0.8-1.28);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -4.75+5.12);
 lemlib::Drivetrain drivetrain(&left_mg, // left motor group
                               &right_mg, // right motor group
                               10, // 10 inch track width
@@ -73,6 +73,7 @@ lemlib::Chassis chassis(drivetrain, // drivetrain settings
  */
 void initialize() {
     //lvgl_auton_selector();
+    pros::lcd::initialize();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
     right_mg.set_brake_mode_all(pros::MotorBrake::coast);
@@ -83,6 +84,9 @@ void initialize() {
     intake_top.set_brake_mode(pros::MotorBrake::hold);
 
     chassis.calibrate(); // calibrate sensors
+    pros::delay(3000);
+    chassis.setPose(0, 0, imu_1.get_heading());
+
     // print position to brain screen
     pros::Task screen_task([&]() {
         while (true) {
@@ -90,6 +94,7 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            printf("(%f,%f),", chassis.getPose().x, chassis.getPose().y);
             // delay to save resources
             pros::delay(20);
         }
@@ -125,7 +130,9 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
