@@ -70,6 +70,7 @@
 #include "auton.hpp"
 #include "extras.hpp"
 #include "driver.hpp"
+#include "colorsort.hpp"
 
 /**
  * Robot configuration
