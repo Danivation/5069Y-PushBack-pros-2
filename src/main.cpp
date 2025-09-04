@@ -16,8 +16,8 @@ pros::Optical optical_block(13);
 pros::Rotation horizontal_rotation(15);
 pros::Rotation vertical_rotation(16);
 
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -4-0.55-0.82);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -0.6-0.29-0.28);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, 0);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0);
 // drivetrain configuration:   left      right   track width       wheel size         rpm  horizontal drift (2 for omnis)
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW_325, 450, 2);
 // tracker wheel configuration
@@ -115,14 +115,14 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-    left_mg.move(127);
-    right_mg.move(-127);
+    left_mg.move(60);
+    right_mg.move(-60);
     pros::delay(3000);
     left_mg.brake();
     right_mg.brake();
     pros::delay(500);
-    left_mg.move(-127);
-    right_mg.move(127);
+    left_mg.move(-60);
+    right_mg.move(60);
     pros::delay(3000);
     left_mg.brake();
     right_mg.brake();
