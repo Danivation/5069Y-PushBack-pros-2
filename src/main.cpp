@@ -17,12 +17,12 @@ pros::Optical optical_block(13);
 pros::Rotation horizontal_rotation(15);
 pros::Rotation vertical_rotation(16);
 
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, 3.75-3.22);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0.4+0.2);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, 0.53);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0.2);
 lemlib::Drivetrain drivetrain(&left_mg, // left motor group
                               &right_mg, // right motor group
                               10, // 10 inch track width
-                              lemlib::Omniwheel::NEW_325, // using new 4" omnis
+                              lemlib::Omniwheel::NEW_325, // using new 4" omnisq
                               450, // drivetrain rpm is 360
                               2 // horizontal drift is 2 (for now)
 );
@@ -96,7 +96,7 @@ void initialize() {
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
             printf("(%f,%f),", chassis.getPose().x, chassis.getPose().y);
             // delay to save resources
-            pros::delay(20);
+            pros::delay(50);
         }
     });
 }
@@ -158,9 +158,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-    //pros::Task d_drivetrain_control (DrivetrainControl);
-    //pros::Task d_intake_control     (IntakeControl);
+    pros::Task d_drivetrain_control (DrivetrainControl);
+    pros::Task d_intake_control     (IntakeControl);
 
-    pros::delay(500);
-    autonomous();
+    //pros::delay(500);
+    //autonomous();
 }
