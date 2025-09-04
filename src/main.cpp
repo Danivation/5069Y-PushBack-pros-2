@@ -17,8 +17,8 @@ pros::Optical optical_block(13);
 pros::Rotation horizontal_rotation(15);
 pros::Rotation vertical_rotation(16);
 
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -0.8-1.28);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -4.75+5.12);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, 3.75-3.22);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0.4+0.2);
 lemlib::Drivetrain drivetrain(&left_mg, // left motor group
                               &right_mg, // right motor group
                               10, // 10 inch track width
@@ -76,8 +76,8 @@ void initialize() {
     pros::lcd::initialize();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
-    right_mg.set_brake_mode_all(pros::MotorBrake::coast);
-    left_mg.set_brake_mode_all(pros::MotorBrake::coast);
+    right_mg.set_brake_mode_all(pros::MotorBrake::hold);
+    left_mg.set_brake_mode_all(pros::MotorBrake::hold);
     intake_bottom.set_brake_mode(pros::MotorBrake::hold);
     intake_back.set_brake_mode(pros::MotorBrake::hold);
     intake_front.set_brake_mode(pros::MotorBrake::hold);
@@ -131,7 +131,17 @@ void competition_initialize() {}
  * from where it left off.
  */
 void autonomous() {
-
+    left_mg.move(127);
+    right_mg.move(-127);
+    pros::delay(3000);
+    left_mg.brake();
+    right_mg.brake();
+    pros::delay(500);
+    left_mg.move(-127);
+    right_mg.move(127);
+    pros::delay(3000);
+    left_mg.brake();
+    right_mg.brake();
 }
 
 /**
@@ -148,6 +158,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-    pros::Task d_drivetrain_control (DrivetrainControl);
-    pros::Task d_intake_control     (IntakeControl);
+    //pros::Task d_drivetrain_control (DrivetrainControl);
+    //pros::Task d_intake_control     (IntakeControl);
+
+    pros::delay(500);
+    autonomous();
 }
