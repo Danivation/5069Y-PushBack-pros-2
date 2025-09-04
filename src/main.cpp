@@ -13,27 +13,15 @@ pros::Motor intake_front(-3);
 pros::Motor intake_back(4);
 pros::Motor intake_top(5);
 pros::Optical optical_block(13);
-
 pros::Rotation horizontal_rotation(15);
 pros::Rotation vertical_rotation(16);
 
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, 0.53);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0.2);
-lemlib::Drivetrain drivetrain(&left_mg, // left motor group
-                              &right_mg, // right motor group
-                              10, // 10 inch track width
-                              lemlib::Omniwheel::NEW_325, // using new 4" omnisq
-                              450, // drivetrain rpm is 360
-                              2 // horizontal drift is 2 (for now)
-);
-
-lemlib::OdomSensors sensors(&vertical_tracker, // vertical tracking wheel 1, set to null
-                            nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-                            &horizontal_tracker, // horizontal tracking wheel 1
-                            nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a second one
-                            &imu_1 // inertial sensor
-);
-
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -4-0.55-0.82);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -0.6-0.29-0.28);
+// drivetrain configuration:   left      right   track width       wheel size         rpm  horizontal drift (2 for omnis)
+lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW_325, 450, 2);
+// tracker wheel configuration
+lemlib::OdomSensors sensors(&vertical_tracker, nullptr, &horizontal_tracker, nullptr, &imu_1);
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               0, // integral gain (kI)
@@ -45,7 +33,6 @@ lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               500, // large error range timeout, in milliseconds
                                               20 // maximum acceleration (slew)
 );
-
 // angular PID controller
 lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
                                               0, // integral gain (kI)
@@ -57,13 +44,8 @@ lemlib::ControllerSettings angular_controller(2, // proportional gain (kP)
                                               500, // large error range timeout, in milliseconds
                                               0 // maximum acceleration (slew)
 );
-
 // create the chassis
-lemlib::Chassis chassis(drivetrain, // drivetrain settings
-                        lateral_controller, // lateral PID settings
-                        angular_controller, // angular PID settings
-                        sensors // odometry sensors
-);
+lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -94,9 +76,11 @@ void initialize() {
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
             pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
             pros::lcd::print(2, "Theta: %f", chassis.getPose().theta); // heading
+            //pros::lcd::print(3, "Horiz: %f", horizontal_rotation.get_position());
+            //pros::lcd::print(4, "Vert: %f", vertical_rotation.get_position());
             printf("(%f,%f),", chassis.getPose().x, chassis.getPose().y);
             // delay to save resources
-            pros::delay(50);
+            pros::delay(20);
         }
     });
 }
@@ -158,9 +142,9 @@ void autonomous() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
-    pros::Task d_drivetrain_control (DrivetrainControl);
-    pros::Task d_intake_control     (IntakeControl);
+    //pros::Task d_drivetrain_control (DrivetrainControl);
+    //pros::Task d_intake_control     (IntakeControl);
 
-    //pros::delay(500);
-    //autonomous();
+    pros::delay(500);
+    autonomous();
 }
