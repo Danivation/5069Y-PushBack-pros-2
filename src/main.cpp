@@ -34,9 +34,9 @@ lemlib::ControllerSettings lateral_controller(10, // proportional gain (kP)
                                               20 // maximum acceleration (slew)
 );
 // angular PID controller
-lemlib::ControllerSettings angular_controller(1.7, // proportional gain (kP)
+lemlib::ControllerSettings angular_controller(1.5, // proportional gain (kP)
                                               0, // integral gain (kI)
-                                              5, // derivative gain (kD)
+                                              7, // derivative gain (kD)
                                               0, // anti windup
                                               0, // small error range, in degrees
                                               0, // small error range timeout, in milliseconds
@@ -52,8 +52,8 @@ void initialize() {
     pros::lcd::initialize();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
-    right_mg.set_brake_mode_all(pros::MotorBrake::hold);
-    left_mg.set_brake_mode_all(pros::MotorBrake::hold);
+    right_mg.set_brake_mode_all(pros::MotorBrake::brake);
+    left_mg.set_brake_mode_all(pros::MotorBrake::brake);
     intake_bottom.set_brake_mode(pros::MotorBrake::hold);
     intake_back.set_brake_mode(pros::MotorBrake::hold);
     intake_front.set_brake_mode(pros::MotorBrake::hold);
@@ -85,7 +85,7 @@ void competition_initialize() {}
 void autonomous() {
     chassis.setPose(0, 0, imu_1.get_heading());
     // turn to face heading 90 with a very long timeout
-    chassis.turnToHeading(90, 100000);
+    chassis.turnToHeading(180, 100000);
 }
 
 void opcontrol() {
