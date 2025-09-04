@@ -33,3 +33,6 @@ void lvgl_auton_selector();
 
 // Auton functions
 void autonNone();
+
+
+void pure_pursuit_test();
