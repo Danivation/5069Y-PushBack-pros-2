@@ -60,10 +60,8 @@ void IntakeControl() {
     }
 }
 
-int StorageControl()
-{
-    while (true)
-    {
+int StorageControl() {
+    while (true) {
         waitUntil(!STORAGE_DRAIN_TOGGLE);
         waitUntil(STORAGE_DRAIN_TOGGLE);
         StorageEnabled = !StorageEnabled;

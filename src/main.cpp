@@ -16,8 +16,8 @@ pros::Optical optical_block(13);
 pros::Rotation horizontal_rotation(15);
 pros::Rotation vertical_rotation(16);
 
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, 0);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -3.62);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -0.4);
 // drivetrain configuration:   left      right   track width       wheel size         rpm  horizontal drift (2 for omnis)
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW_325, 450, 2);
 // tracker wheel configuration
