@@ -14,6 +14,32 @@ void initialize() {
     optical_block.set_integration_time(5);
 
     chassis.calibrate(); // calibrate sensors
+
+    // print stuff to brain screen
+    pros::lcd::initialize();
+    pros::Task screen_task([&]() {
+        while (true) {
+            // optical sensor data
+            pros::lcd::print(0, "Proximity: %i", (int)optical_block.get_proximity());
+            pros::lcd::print(1, "Hue: %f", optical_block.get_hue());
+            pros::lcd::print(2, "RGB: %f %f %f %f", 
+                optical_block.get_rgb().red, 
+                optical_block.get_rgb().green, 
+                optical_block.get_rgb().blue, 
+                optical_block.get_rgb().brightness
+            );
+
+            // print robot location to the brain screen
+            // pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
+            // pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
+            // pros::lcd::print(2, "Theta: %f", reduce_0_to_360(chassis.getPose().theta)); // heading
+            //pros::lcd::print(3, "Horiz: %f", horizontal_rotation.get_position());
+            //pros::lcd::print(4, "Vert: %f", vertical_rotation.get_position());
+            //printf("(%f,%f),", chassis.getPose().x, chassis.getPose().y);
+            // delay to save resources
+            pros::delay(20);
+        }
+    });
 }
 
 void disabled() {}

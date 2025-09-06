@@ -11,15 +11,15 @@ bool ColorLock = false;
 pros::Color get_color(pros::Optical* sensor) {
     float hue = sensor->get_hue();
 
-    if (hue < 30 || hue > 330) {
+    if (hue < 30 || hue > 330) {        // 330 to 360, 0 to 30
         return pros::Color::red;
-    } else if (hue < 90) {
+    } else if (hue < 90) {              // 30 to 90
         return pros::Color::yellow;
-    } else if (hue < 150) {
+    } else if (hue < 150) {             // 90 to 150
         return pros::Color::green;
-    } else if (hue < 270) {
+    } else if (hue < 270) {             // 150 to 270
         return pros::Color::blue;
-    } else {
+    } else {                            // 270 to 330
         return pros::Color::white;
     }
 }
@@ -42,16 +42,21 @@ int BlockRelease() {
 
 pros::Color SortColor = Color::white;
 void ColorSort() {
-    const int detection_cycle_time = 10;    // 10 ms * 10 cycles = 100 ms between an object being detected and the color being confirmed
+    const int detection_cycle_time = 20;    // 10 ms * 10 cycles = 100 ms between an object being detected and the color being confirmed
     // todo: make it not recheck the color if the same object is still there or do make it recheck or something
-    const int detection_threshold = 7;      // 7/10 of the cycles have to be the correct color for it to count
+    const int detection_threshold = 15;      // 7/10 of the cycles have to be the correct color for it to count
     // todo: make it recheck if its between 3-7 cause its not really sure
+    const int proximity_threshold = 50;     // closer object -> higher proximity
     int object_streak = 0;
     int detection_strength = 0;
     while (true) {
-        if (optical_block.get_proximity() < 100) {
+        
+        // PROXIMITY IS HIGHER AS IT GETS CLOSER!
+        if ((int)optical_block.get_proximity() >= proximity_threshold && (int)optical_block.get_proximity() >= 0) {
             // log that an object has been detected
             object_streak += 1;
+
+            //printf("NEAR OBJECT: distance: %i, hue: %f\n", optical_block.get_hue(), (int)optical_block.get_proximity());
 
             // if the object is the color that we want to sort out, log that the correct color has been detected
             pros::Color detected_color = get_color(&optical_block);
@@ -65,57 +70,14 @@ void ColorSort() {
             detection_strength = 0;
         }
         // once an object has been detected for 10 cycles, check how strongly the sorting color was found throughout those cycles
-        if (object_streak >= 10) {
-            if (detection_strength >= 7) {
-                printf("block detected with strength %i", detection_strength);
+        if (object_streak >= detection_cycle_time) {
+            if (detection_strength >= detection_threshold) {
+                printf("block detected with strength %i \n", detection_strength);
                 pros::Task release1(BlockRelease);
             }
             object_streak = 0;
             detection_strength = 0;
         }
         pros::delay(10);
-    }
-}
-
-pros::Color SortColor2 = Color::white;
-int ccount = 0;   // wrong color counter
-int ColorSort2()
-{
-    int tcount = 0;   // detection threshold counter
-    //int rcount = 0;   // total block counter
-    int ncount = 0;   // no block counter
-    
-    while (true)
-    {
-        if (optical_block.get_proximity() < 50)                                                 // TUNE TS
-        {
-            tcount += 1;
-            pros::Color DetectedColor = get_color(&optical_block);
-
-            if (DetectedColor == SortColor)
-            {
-                ccount += 1;
-            }
-            
-            if (tcount >= 5 && ccount >= 8)    // if its been near an object for more than 9 cycles
-            {
-                std::cout << "block detected (color) with strength " << ccount << " after " << ncount << "\n";
-                ncount = 0;
-                tcount = 0;
-                pros::Task release1(BlockRelease);
-                // REPLACE THIS with something that says when the block has passed,
-                // maybe a redundant check for a new color for more than a few cycles
-                waitUntil(!optical_block.get_proximity() < 50);                                    // TUNE TS
-                ccount = 0;
-            }
-            pros::delay(3);
-        }
-        else
-        {
-            tcount = 0;
-            ncount += 1;
-            pros::delay(1);
-            ccount = 0;
-        }
     }
 }
