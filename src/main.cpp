@@ -74,7 +74,7 @@ void autonomous() {
 }
 
 void opcontrol() {
-    SortColor = Color::red;
+    SortColor = Color::blue;
     pros::Task d_color_sort         (ColorSort);
 
     pros::Task d_drivetrain_control (DrivetrainControl);
