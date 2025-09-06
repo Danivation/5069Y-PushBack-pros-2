@@ -2,3 +2,4 @@
 
 void DrivetrainControl();
 void IntakeControl();
+void StorageControl();

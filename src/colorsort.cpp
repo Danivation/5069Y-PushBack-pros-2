@@ -24,7 +24,7 @@ pros::Color get_color(pros::Optical* sensor) {
     }
 }
 
-const pros::Color SortColor = Color::white;
+pros::Color SortColor = Color::white;
 int ccount = 0;   // wrong color counter
 int ColorSort()
 {
@@ -38,9 +38,7 @@ int ColorSort()
         if (optical_block.get_proximity() < 50)                                                 // TUNE TS
         {
             tcount += 1;
-            pros::Color DetectedColor = Color::white;
-            if (optical_block.get_hue() < 100) DetectedColor = Color::red;
-            if (optical_block.get_hue() > 100) DetectedColor = Color::blue;
+            pros::Color DetectedColor = get_color(&optical_block);
 
             if (DetectedColor == SortColor)
             {

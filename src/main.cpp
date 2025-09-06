@@ -4,17 +4,17 @@
  * Robot configuration
  */
 pros::Controller master(pros::E_CONTROLLER_MASTER);
-pros::MotorGroup left_mg({18, 19, -20}, pros::MotorGearset::blue);
-pros::MotorGroup right_mg({-8, -9, 10}, pros::MotorGearset::blue);
-pros::Imu imu_1(1);
-pros::Imu imu_2(20);
-pros::Motor intake_bottom(-2);
-pros::Motor intake_front(-3);
-pros::Motor intake_back(4);
-pros::Motor intake_top(5);
-pros::Optical optical_block(13);
-pros::Rotation horizontal_rotation(15);
-pros::Rotation vertical_rotation(-16);
+pros::MotorGroup left_mg({-4, 5, 6}, pros::MotorGearset::blue);
+pros::MotorGroup right_mg({7, -8, -9}, pros::MotorGearset::blue);
+pros::Imu imu_1(3);
+pros::Imu imu_2(11);    // unused
+pros::Motor intake_bottom(-18);
+pros::Motor intake_front(-19);
+pros::Motor intake_back(17);
+pros::Motor intake_top(20);
+pros::Optical optical_block(10);
+pros::Rotation horizontal_rotation(2);
+pros::Rotation vertical_rotation(-1);
 
 lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -3.2);
 lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -0.4);
@@ -48,23 +48,24 @@ lemlib::ControllerSettings angular_controller(1.5, // proportional gain (kP)
 lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller, sensors);
 
 void initialize() {
-    //lvgl_auton_selector();
-    pros::lcd::initialize();
+    //pros::lcd::initialize();
+    lvgl_auton_selector();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
-    right_mg.set_brake_mode_all(pros::MotorBrake::brake);
-    left_mg.set_brake_mode_all(pros::MotorBrake::brake);
-    intake_bottom.set_brake_mode(pros::MotorBrake::hold);
-    intake_back.set_brake_mode(pros::MotorBrake::hold);
-    intake_front.set_brake_mode(pros::MotorBrake::hold);
-    intake_top.set_brake_mode(pros::MotorBrake::hold);
+    right_mg.set_brake_mode_all(pros::MotorBrake::coast);
+    left_mg.set_brake_mode_all(pros::MotorBrake::coast);
+    intake_bottom.set_brake_mode(pros::MotorBrake::brake);
+    intake_back.set_brake_mode(pros::MotorBrake::brake);
+    intake_front.set_brake_mode(pros::MotorBrake::brake);
+    intake_top.set_brake_mode(pros::MotorBrake::brake);
+    optical_block.set_led_pwm(100);
 
     chassis.calibrate(); // calibrate sensors
     pros::delay(2000);
     chassis.setPose(0, 0, imu_1.get_heading());
 
     // print position to brain screen
-    pros::Task screen_task([&]() {
+/*     pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
@@ -76,11 +77,14 @@ void initialize() {
             // delay to save resources
             pros::delay(20);
         }
-    });
+    }); */
 }
 
 void disabled() {}
-void competition_initialize() {}
+
+void competition_initialize() {
+    //lvgl_auton_selector();
+}
 
 void autonomous() {
     chassis.setPose(0, 0, imu_1.get_heading());
@@ -89,8 +93,12 @@ void autonomous() {
 }
 
 void opcontrol() {
-    //pros::Task d_drivetrain_control (DrivetrainControl);
-    //pros::Task d_intake_control     (IntakeControl);
+    SortColor = Color::red;
+    pros::Task d_color_sort         (ColorSort);
 
-    autonomous();
+    pros::Task d_drivetrain_control (DrivetrainControl);
+    pros::Task d_intake_control     (IntakeControl);
+    pros::Task d_storage_control    (StorageControl);
+
+    //autonomous();
 }

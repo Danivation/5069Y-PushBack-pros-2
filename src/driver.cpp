@@ -53,14 +53,17 @@ void IntakeControl() {
             else intake_back.brake();
         }
         if (!INTAKE_TO_STORAGE && !INTAKE_TO_LOW_GOAL && !INTAKE_TO_MID_GOAL && !INTAKE_TO_HIGH_GOAL && !STORAGE_REVERSE_TOGGLE) {
-            //Intake.stop();
+            intake_bottom.brake();
+            intake_front.brake();
+            intake_top.brake();
+            intake_back.brake();
         }
         
         pros::delay(10);
     }
 }
 
-int StorageControl() {
+void StorageControl() {
     while (true) {
         waitUntil(!STORAGE_DRAIN_TOGGLE);
         waitUntil(STORAGE_DRAIN_TOGGLE);
