@@ -32,7 +32,7 @@ LIBNAME:=lib5069Ypros
 VERSION:=1.0.0
 
 # excludes these files from going into the cold package
-EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/main.cpp $(SRCDIR)/auton.cpp $(SRCDIR)/driver.cpp $(SRCDIR)/colorsort.cpp
+EXCLUDE_SRC_FROM_LIB= $(SRCDIR)/main.cpp $(SRCDIR)/auton.cpp $(SRCDIR)/driver.cpp $(SRCDIR)/colorsort.cpp $(SRCDIR)/robot-config.cpp $(SRCDIR)/extras.cpp
 
 # files that get distributed to every user (beyond your source archive) - add
 # whatever files you want here. This line is configured to add all header files

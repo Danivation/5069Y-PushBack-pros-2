@@ -10,8 +10,8 @@ void initialize() {
     intake_back.set_brake_mode(pros::MotorBrake::brake);
     intake_front.set_brake_mode(pros::MotorBrake::brake);
     intake_top.set_brake_mode(pros::MotorBrake::brake);
-    //optical_block.set_led_pwm(100);
-    //optical_block.set_integration_time(5);
+    optical_block.set_led_pwm(100);
+    optical_block.set_integration_time(5);
 
     chassis.calibrate(); // calibrate sensors
 }
@@ -48,12 +48,12 @@ void autonomous() {
 }
 
 void opcontrol() {
-    //SortColor = Color::red;
-    //pros::Task d_color_sort         (ColorSort);
+    SortColor = Color::red;
+    pros::Task d_color_sort         (ColorSort);
 
     pros::Task d_drivetrain_control (DrivetrainControl);
-    //pros::Task d_intake_control     (IntakeControl);
-    //pros::Task d_storage_control    (StorageControl);
+    pros::Task d_intake_control     (IntakeControl);
+    pros::Task d_storage_control    (StorageControl);
 
     //autonomous();
 }
