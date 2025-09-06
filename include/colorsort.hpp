@@ -1,5 +1,5 @@
 #pragma once
 
 extern pros::Color SortColor;
-int ColorSort();
-int BlockRelease();
+extern bool ColorStop;
+void ColorSort();

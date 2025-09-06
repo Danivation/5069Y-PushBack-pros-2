@@ -24,11 +24,63 @@ pros::Color get_color(pros::Optical* sensor) {
     }
 }
 
+bool ColorStop;
+pros::Color CurrentColor;
+int BlockRelease() {
+    pros::delay(300);
+    if (!ColorLock) {
+        std::cout << "releasing\n";
+        pros::Color DetectedColor = get_color(&optical_block);
+        ColorStop = true;
+        intake_front.move_voltage(-12000);
+        waitUntil(!optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
+        pros::delay(400);
+        ColorStop = false;
+    }
+    return 1;
+}
+
 pros::Color SortColor = Color::white;
+void ColorSort() {
+    const int detection_cycle_time = 10;    // 10 ms * 10 cycles = 100 ms between an object being detected and the color being confirmed
+    // todo: make it not recheck the color if the same object is still there or do make it recheck or something
+    const int detection_threshold = 7;      // 7/10 of the cycles have to be the correct color for it to count
+    // todo: make it recheck if its between 3-7 cause its not really sure
+    int object_streak = 0;
+    int detection_strength = 0;
+    while (true) {
+        if (optical_block.get_proximity() < 100) {
+            // log that an object has been detected
+            object_streak += 1;
+
+            // if the object is the color that we want to sort out, log that the correct color has been detected
+            pros::Color detected_color = get_color(&optical_block);
+            if (detected_color == SortColor) {
+                detection_strength += 1;
+            } /* else {
+                detection_strength = 0;
+            } */
+        } else {
+            object_streak = 0;
+            detection_strength = 0;
+        }
+        // once an object has been detected for 10 cycles, check how strongly the sorting color was found throughout those cycles
+        if (object_streak >= 10) {
+            if (detection_strength >= 7) {
+                printf("block detected with strength %i", detection_strength);
+                pros::Task release1(BlockRelease);
+            }
+            object_streak = 0;
+            detection_strength = 0;
+        }
+        pros::delay(10);
+    }
+}
+
+pros::Color SortColor2 = Color::white;
 int ccount = 0;   // wrong color counter
-int ColorSort()
+int ColorSort2()
 {
-    optical_block.set_integration_time(3);
     int tcount = 0;   // detection threshold counter
     //int rcount = 0;   // total block counter
     int ncount = 0;   // no block counter
@@ -66,20 +118,4 @@ int ColorSort()
             ccount = 0;
         }
     }
-}
-
-bool ColorStop;
-pros::Color CurrentColor;
-int BlockRelease() {
-    pros::delay(300);
-    if (!ColorLock) {
-        std::cout << "releasing\n";
-        pros::Color DetectedColor = get_color(&optical_block);
-        ColorStop = true;
-        intake_front.move_voltage(-12000);
-        waitUntil(!optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
-        pros::delay(400);
-        ColorStop = false;
-    }
-    return 1;
 }

@@ -27,7 +27,8 @@ void IntakeControl() {
     while (true) {
         if (INTAKE_TO_STORAGE) {
             intake_bottom.move_voltage(12000);
-            intake_front.move_voltage(12000);
+            if (!ColorStop) intake_front.move_voltage(12000);
+            else intake_front.brake();
             intake_top.move_voltage(-12000);
             intake_back.brake();
         }
@@ -40,14 +41,17 @@ void IntakeControl() {
         }
         if (INTAKE_TO_MID_GOAL) {
             intake_bottom.move_voltage(12000);
-            intake_front.move_voltage(-12000);
+            // figure out some way to get it to go to high goal if it gets color sorted here
+            if (!ColorStop) intake_front.move_voltage(-12000);
+            else intake_front.brake();
             intake_top.move_voltage(12000);
             if (StorageEnabled) intake_back.move_voltage(12000);
             else intake_back.brake();
         }
         if (INTAKE_TO_HIGH_GOAL) {
             intake_bottom.move_voltage(12000);
-            intake_front.move_voltage(12000);
+            if (!ColorStop) intake_front.move_voltage(12000);
+            else intake_front.brake();
             intake_top.move_voltage(12000);
             if (StorageEnabled) intake_back.move_voltage(12000);
             else intake_back.brake();

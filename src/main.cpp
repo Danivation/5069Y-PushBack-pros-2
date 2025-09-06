@@ -1,7 +1,7 @@
 #include "main.h"
 
 void initialize() {
-    lvgl_auton_selector();
+    //lvgl_auton_selector();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
     right_mg.set_brake_mode_all(pros::MotorBrake::coast);
@@ -10,14 +10,23 @@ void initialize() {
     intake_back.set_brake_mode(pros::MotorBrake::brake);
     intake_front.set_brake_mode(pros::MotorBrake::brake);
     intake_top.set_brake_mode(pros::MotorBrake::brake);
-    optical_block.set_led_pwm(100);
+    //optical_block.set_led_pwm(100);
+    //optical_block.set_integration_time(5);
 
     chassis.calibrate(); // calibrate sensors
+}
+
+void disabled() {}
+
+void competition_initialize() {
+/*     chassis.calibrate();
     pros::delay(2000);
     chassis.setPose(0, 0, imu_1.get_heading());
+    lv_deinit();
+    pros::lcd::initialize();
 
     // print position to brain screen
-/*     pros::Task screen_task([&]() {
+    pros::Task screen_task([&]() {
         while (true) {
             // print robot location to the brain screen
             pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
@@ -32,26 +41,19 @@ void initialize() {
     }); */
 }
 
-void disabled() {}
-
-void competition_initialize() {
-    lv_deinit();
-    pros::lcd::initialize();
-}
-
 void autonomous() {
-    chassis.setPose(0, 0, imu_1.get_heading());
+    //chassis.setPose(0, 0, imu_1.get_heading());
     // turn to face heading 90 with a very long timeout
-    chassis.turnToHeading(180, 100000);
+    //chassis.turnToHeading(180, 100000);
 }
 
 void opcontrol() {
-    SortColor = Color::red;
-    pros::Task d_color_sort         (ColorSort);
+    //SortColor = Color::red;
+    //pros::Task d_color_sort         (ColorSort);
 
     pros::Task d_drivetrain_control (DrivetrainControl);
-    pros::Task d_intake_control     (IntakeControl);
-    pros::Task d_storage_control    (StorageControl);
+    //pros::Task d_intake_control     (IntakeControl);
+    //pros::Task d_storage_control    (StorageControl);
 
     //autonomous();
 }
