@@ -282,7 +282,7 @@ static void blue_right_action(lv_event_t * event) {
 
         // set image offset
         lv_obj_set_size(field_image, 200, 200);
-        lv_image_set_offset_y(field_image, -100);
+        lv_image_set_offset_y(field_image, 100);
         lv_image_set_offset_x(field_image, -100);
 
         // create buttons and labels
@@ -298,7 +298,7 @@ static void blue_left_action(lv_event_t * event) {
         
         // set image offset
         lv_obj_set_size(field_image, 200, 200);
-        lv_image_set_offset_y(field_image, 100);
+        lv_image_set_offset_y(field_image, -100);
         lv_image_set_offset_x(field_image, -100);
 
         // create buttons and labels

@@ -1,7 +1,7 @@
 #include "main.h"
 
 void initialize() {
-    //lvgl_auton_selector();
+    lvgl_auton_selector();
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
     right_mg.set_brake_mode_all(pros::MotorBrake::coast);
@@ -16,7 +16,7 @@ void initialize() {
     chassis.calibrate(); // calibrate sensors
 
     // print stuff to brain screen
-    pros::lcd::initialize();
+    /* pros::lcd::initialize();
     pros::Task screen_task([&]() {
         while (true) {
             // optical sensor data
@@ -39,7 +39,7 @@ void initialize() {
             // delay to save resources
             pros::delay(20);
         }
-    });
+    }); */
 }
 
 void disabled() {}
@@ -75,7 +75,7 @@ void autonomous() {
 
 void opcontrol() {
     SortColor = Color::blue;
-    pros::Task d_color_sort         (ColorSort);
+    //pros::Task d_color_sort         (ColorSort);
 
     pros::Task d_drivetrain_control (DrivetrainControl);
     pros::Task d_intake_control     (IntakeControl);
