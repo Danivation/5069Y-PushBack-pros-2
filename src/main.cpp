@@ -35,6 +35,7 @@ void screen_print() {
 
 void initialize() {
     lvgl_auton_selector(red_right_autons, red_left_autons, blue_right_autons, blue_left_autons, skills_auton);
+    pros::delay(500);
 
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
@@ -77,6 +78,7 @@ void competition_initialize() {
 }
 
 void autonomous() {
+    pros::lcd::shutdown();
     auton_descriptor_t selected_auton = get_selected_auton().second;
     if (selected_auton.callback) selected_auton.callback();
 }

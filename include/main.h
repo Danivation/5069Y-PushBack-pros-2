@@ -40,6 +40,7 @@
  * You should add more #includes here
  */
 #include "pros/apix.h"
+#include "liblvgl/llemu.hpp"
 #include "liblvgl/lvgl.h"
 #include "lemlib/api.hpp"
 
