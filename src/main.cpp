@@ -60,7 +60,7 @@ void autonomous() {
     auton_descriptor_t selected_auton = get_selected_auton();
     lv_obj_clean(lv_screen_active());
     pros::lcd::initialize();
-    pros::lcd::print(0, selected_auton.callback_name.c_str());
+    selected_auton.callback();
 }
 
 void opcontrol() {

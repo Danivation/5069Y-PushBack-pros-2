@@ -19,10 +19,10 @@ enum auton_mode_t {
 struct auton_descriptor_t {
     std::string name;
     std::string score;
-    std::string callback_name;
+    void (*callback)();
 
-    auton_descriptor_t(const std::string& n, const std::string& s = "0 points", const std::string& cb = "")
-        : name(n), score(s), callback_name(cb) {}
+    auton_descriptor_t(const std::string& n, const std::string& s = "0 points", void (*cb)() = nullptr)
+        : name(n), score(s), callback(cb) {}
 };
 
 void lvgl_auton_selector(

@@ -1,9 +1,9 @@
 #include "main.h"
 
 const std::vector<auton_descriptor_t> red_right_autons = {
-    {"None", "0 points", "auton_none"},
-    {"Red Right 1", "1 point", "auton_red_right_1"},
-    {"Auton 2", "5 points", "auton_red_right_2"},
+    {"None", "0 points", auton_none},
+    {"Red Right 1", "1 point", auton_red_right_1},
+    {"Auton 2", "5 points", auton_red_right_2},
     {"Auton 3", "12 points"}
 };
 const std::vector<auton_descriptor_t> red_left_autons = {
@@ -24,7 +24,7 @@ const std::vector<auton_descriptor_t> blue_left_autons = {
     {"Auton 2", "5 points"},
     {"Auton 3", "12 points"}
 };
-const auton_descriptor_t skills_auton = {"Skills", "0 points", "auton_skills"};
+const auton_descriptor_t skills_auton = {"Skills", "0 points", auton_skills};
 
 ASSET(testpath_txt);
 
@@ -58,17 +58,17 @@ void turn_tuning() {
 }
 
 void auton_none() {
-    printf("hi from auton_none!");
+    pros::lcd::print(0, "hi from auton_none!");
 }
 
 void auton_red_right_1() {
-    printf("hi from red right 1");
+    pros::lcd::print(0, "hi from red right 1");
 }
 
 void auton_red_right_2() {
-    printf("hi from red right 2");
+    pros::lcd::print(0, "hi from red right 2");
 }
 
 void auton_skills() {
-    printf("hi from skills!");
+    pros::lcd::print(0, "hi from skills!");
 }
