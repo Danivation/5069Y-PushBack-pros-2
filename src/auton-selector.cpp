@@ -38,19 +38,19 @@ std::vector<auton_descriptor_t> blue_left_list = {{""}};
 auton_descriptor_t skills_descriptor = {""};
 
 // todo: find some way to include a callback or function pointer to an auton but the auton selector is in the cold package
-auton_descriptor_t get_selected_auton() {
+std::pair<auton_mode_t, auton_descriptor_t> get_selected_auton() {
     if (selected_auton_group == RED_RIGHT) {
-        return red_right_list[selected_auton_index];
+        return std::make_pair(RED_RIGHT, red_right_list[selected_auton_index]);
     } else if (selected_auton_group == RED_LEFT) {
-        return red_left_list[selected_auton_index];
+        return std::make_pair(RED_LEFT, red_left_list[selected_auton_index]);
     } else if (selected_auton_group == BLUE_RIGHT) {
-        return blue_right_list[selected_auton_index];
+        return std::make_pair(BLUE_RIGHT, blue_right_list[selected_auton_index]);
     } else if (selected_auton_group == BLUE_LEFT) {
-        return blue_left_list[selected_auton_index];
+        return std::make_pair(BLUE_LEFT, blue_left_list[selected_auton_index]);
     } else if (selected_auton_group == SKILLS) {
-        return skills_descriptor;
+        return std::make_pair(SKILLS, skills_descriptor);
     } else {
-        return {""};
+        return std::make_pair(NONE, (auton_descriptor_t){""});
     }
 }
 
@@ -71,7 +71,6 @@ static void confirm_action(lv_event_t * event) {
         lv_obj_set_style_text_color(lv_screen_active(), lv_color_black(), LV_PART_MAIN);
         lv_obj_set_style_bg_color(confirm_button, lv_palette_main(LV_PALETTE_GREEN), LV_PART_MAIN);
         lv_obj_set_style_bg_color(lv_screen_active(), lv_palette_darken(LV_PALETTE_ORANGE, 1), LV_PART_MAIN);
-        //confirm_task = Task::create(confirm_clicked);
     }
 }
 

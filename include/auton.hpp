@@ -32,7 +32,7 @@ void lvgl_auton_selector(
     const std::vector<auton_descriptor_t> blue_left,
     const auton_descriptor_t skills
 );
-auton_descriptor_t get_selected_auton();
+std::pair<auton_mode_t, auton_descriptor_t> get_selected_auton();
 
 extern int selected_auton_index;
 extern auton_mode_t selected_auton_group;

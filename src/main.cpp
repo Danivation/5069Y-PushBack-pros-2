@@ -47,20 +47,38 @@ void initialize() {
     optical_block.set_led_pwm(100);
     optical_block.set_integration_time(5);
 
-    chassis.calibrate(); // calibrate sensors
-
     //screen_print();
 }
 
 void disabled() {}
 
-void competition_initialize() {}
-
-void autonomous() {
-    auton_descriptor_t selected_auton = get_selected_auton();
+void competition_initialize() {
     lv_obj_clean(lv_screen_active());
     pros::lcd::initialize();
-    selected_auton.callback();
+
+    pros::lcd::print(0, "Calibrating...");
+    chassis.calibrate(); // calibrate sensors
+
+    pros::lcd::clear();
+    std::pair<auton_mode_t, auton_descriptor_t> selected_auton = get_selected_auton();
+    std::string auton_name;
+    if (selected_auton.first == RED_RIGHT) {
+        auton_name = std::format("Red Right {} ({})", selected_auton.second.name, selected_auton.second.score);
+    } else if (selected_auton.first == RED_LEFT) {
+        auton_name = std::format("Red Left {} ({})", selected_auton.second.name, selected_auton.second.score);
+    } else if (selected_auton.first == BLUE_RIGHT) {
+        auton_name = std::format("Blue Right {} ({})", selected_auton.second.name, selected_auton.second.score);
+    } else if (selected_auton.first == BLUE_LEFT) {
+        auton_name = std::format("Blue Left {} ({})", selected_auton.second.name, selected_auton.second.score);
+    } else if (selected_auton.first == SKILLS) {
+        auton_name = std::format("Skills ({})", selected_auton.second.score);
+    }
+    pros::lcd::print(0, "Selected Auton: %s", auton_name);
+}
+
+void autonomous() {
+    auton_descriptor_t selected_auton = get_selected_auton().second;
+    if (selected_auton.callback) selected_auton.callback();
 }
 
 void opcontrol() {
