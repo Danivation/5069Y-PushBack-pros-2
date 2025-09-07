@@ -11,9 +11,9 @@ void screen_print() {
     pros::Task screen_task([&]() {
         while (true) {
             // optical sensor data
-            pros::lcd::print(0, "Proximity: %i", (int)optical_block.get_proximity());
-            pros::lcd::print(1, "Hue: %f", optical_block.get_hue());
-            pros::lcd::print(2, "RGB: %f %f %f %f", 
+            pros::lcd::print(2, "Proximity: %i", (int)optical_block.get_proximity());
+            pros::lcd::print(3, "Hue: %f", optical_block.get_hue());
+            pros::lcd::print(4, "RGB: %f %f %f %f", 
                 optical_block.get_rgb().red, 
                 optical_block.get_rgb().green, 
                 optical_block.get_rgb().blue, 
@@ -51,8 +51,6 @@ void initialize() {
     //screen_print();
 }
 
-void disabled() {}
-
 void competition_initialize() {
     lv_obj_clean(lv_screen_active());
     pros::lcd::initialize();
@@ -60,7 +58,6 @@ void competition_initialize() {
     pros::lcd::print(0, "Calibrating...");
     chassis.calibrate(); // calibrate sensors
 
-    pros::lcd::clear();
     std::pair<auton_mode_t, auton_descriptor_t> selected_auton = get_selected_auton();
     std::string auton_name;
     if (selected_auton.first == RED_RIGHT) {
@@ -74,8 +71,10 @@ void competition_initialize() {
     } else if (selected_auton.first == SKILLS) {
         auton_name = std::format("Skills ({})", selected_auton.second.score);
     }
-    pros::lcd::print(0, "Selected Auton: %s", auton_name);
+    pros::lcd::print(0, "Auton: %s", auton_name);
 }
+
+void disabled() {}
 
 void autonomous() {
     pros::lcd::shutdown();
