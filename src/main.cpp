@@ -101,9 +101,13 @@ void opcontrol() {
     chassis.calibrate(); // calibrate sensors
     pros::delay(1000);
     
-    chassis.turnToHeading(180, 3000);
-    chassis.turnToHeading(0, 3000);
-    chassis.turnToHeading(90, 3000);
-    chassis.turnToHeading(0, 3000);
+    chassis.turnToHeading(45, 2000);
+    chassis.turnToHeading(0, 2000);
+    chassis.turnToHeading(90, 2000);
+    chassis.turnToHeading(0, 2000);
+    chassis.turnToHeading(135, 2000);
+    chassis.turnToHeading(0, 2000);
+    chassis.turnToHeading(180, 2000);
+    chassis.turnToHeading(0, 2000);
     pros::delay(1000);
 }

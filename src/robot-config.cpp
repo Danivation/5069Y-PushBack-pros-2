@@ -20,8 +20,8 @@ pros::adi::Pneumatics loader_piston('a', false);
 /**
  * Lemlib configuration
  */
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -8);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, 0.4);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -2);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -0.8);
 // drivetrain configuration:   left      right   track width       wheel size         rpm  horizontal drift (2 for omnis)
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW_325, 450, 2);
 // tracker wheel configuration
@@ -38,9 +38,9 @@ lemlib::ControllerSettings lateral_controller(0, // proportional gain (kP)
                                               0 // maximum acceleration (slew)
 );
 // angular PID controller
-lemlib::ControllerSettings angular_controller(1.95, // proportional gain (kP)
+lemlib::ControllerSettings angular_controller(2.1, // proportional gain (kP)
                                               0.2, // integral gain (kI)
-                                              17.5, // derivative gain (kD)
+                                              16, // derivative gain (kD)
                                               5, // anti windup
                                               0, // small error range, in degrees
                                               0, // small error range timeout, in milliseconds
