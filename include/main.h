@@ -68,6 +68,7 @@
 /**
  * Custom includes go here
  */
+#include "customchassis.hpp"
 #include "auton.hpp"
 #include "extras.hpp"
 #include "driver.hpp"
@@ -88,7 +89,9 @@ extern pros::Motor intake_top;
 extern pros::Optical optical_block;
 extern pros::adi::Pneumatics loader_piston;
 
-extern lemlib::Chassis chassis;
+extern lemlib::Chassis chassis_small;
+extern lemlib::Chassis chassis_big;
+extern CustomChassis chassis;
 
 #define waitUntil(condition)                                                   \
   do {                                                                         \
