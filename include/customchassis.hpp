@@ -20,7 +20,7 @@ class CustomChassis {
          *
          * @example main.cpp
          */
-        CustomChassis(lemlib::Chassis* chassis_small, lemlib::Chassis* chassis_big);
+        CustomChassis(lemlib::Chassis* chassis_small, lemlib::Chassis* chassis_big) : chassis_small(chassis_small), chassis_big(chassis_big) {}
         /**
          * @brief Calibrate the chassis sensors. THis should be called in the initialize function
          *
@@ -650,42 +650,9 @@ class CustomChassis {
             chassis_small->resetLocalPosition();
             chassis_big->resetLocalPosition();
         }
-        /**
-         * PIDs are exposed so advanced users can implement things like gain scheduling
-         * Changes are immediate and will affect a motion in progress
-         *
-         * @warning Do not interact with these unless you know what you are doing
-         */
-        PID lateralPID;
-        /**
-         * PIDs are exposed so advanced users can implement things like gain scheduling
-         * Changes are immediate and will affect a motion in progress
-         *
-         * @warning Do not interact with these unless you know what you are doing
-         */
-        PID angularPID;
     protected:
-        /**
-         * @brief Indicates that this motion is queued and blocks current task until this motion reaches front of queue
-         */
-        void requestMotionStart();
-        /**
-         * @brief Dequeues this motion and permits queued task to run
-         */
-        void endMotion();
-
-        bool motionRunning = false;
-        bool motionQueued = false;
-
-        float distTraveled = 0;
-
         Chassis* chassis_small;
         Chassis* chassis_big;
-
-        ExitCondition lateralLargeExit;
-        ExitCondition lateralSmallExit;
-        ExitCondition angularLargeExit;
-        ExitCondition angularSmallExit;
     private:
         pros::Mutex mutex;
 };
