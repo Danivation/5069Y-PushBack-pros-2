@@ -243,8 +243,8 @@ class CustomChassis {
          * @endcode
          */
         void turnToHeading(float theta, int timeout, TurnToHeadingParams params = {}, bool async = true) {
-            if (std::abs(((int)theta - (int)getPose().theta + 360) % 360) < 90 ||
-                std::abs(((int)theta - (int)getPose().theta + 360) % 360) > 270) {
+            if (std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) < 90 ||
+                std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) > 270) {
                 chassis_small->turnToHeading(theta, timeout, params, async);
             } else {
                 chassis_big->turnToHeading(theta, timeout, params, async);
@@ -285,8 +285,8 @@ class CustomChassis {
          */
         void swingToHeading(float theta, DriveSide lockedSide, int timeout, SwingToHeadingParams params = {},
                             bool async = true) {
-            if (std::abs(((int)theta - (int)getPose().theta + 360) % 360) < 90 ||
-                std::abs(((int)theta - (int)getPose().theta + 360) % 360) > 270) {
+            if (std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) < 90 ||
+                std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) > 270) {
                 chassis_small->swingToHeading(theta, lockedSide, timeout, params, async);
             } else {
                 chassis_big->swingToHeading(theta, lockedSide, timeout, params, async);

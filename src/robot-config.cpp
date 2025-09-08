@@ -28,47 +28,47 @@ lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW
 lemlib::OdomSensors sensors(&vertical_tracker, nullptr, &horizontal_tracker, nullptr, &imu_1);
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller_small(0, // proportional gain (kP)
-                                              0, // integral gain (kI)
-                                              0, // derivative gain (kD)
-                                              0, // anti windup
-                                              0, // small error range, in inches
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in inches
-                                              0, // large error range timeout, in milliseconds
-                                              0 // maximum acceleration (slew)
+                                                    0, // integral gain (kI)
+                                                    0, // derivative gain (kD)
+                                                    0, // anti windup
+                                                    0, // small error range, in inches
+                                                    0, // small error range timeout, in milliseconds
+                                                    0, // large error range, in inches
+                                                    0, // large error range timeout, in milliseconds
+                                                    0 // maximum acceleration (slew)
 );
 // lateral PID controller
-lemlib::ControllerSettings lateral_controller_big(0, // proportional gain (kP)
-                                              0, // integral gain (kI)
-                                              0, // derivative gain (kD)
-                                              0, // anti windup
-                                              0, // small error range, in inches
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in inches
-                                              0, // large error range timeout, in milliseconds
-                                              0 // maximum acceleration (slew)
+lemlib::ControllerSettings lateral_controller_big  (0, // proportional gain (kP)
+                                                    0, // integral gain (kI)
+                                                    0, // derivative gain (kD)
+                                                    0, // anti windup
+                                                    0, // small error range, in inches
+                                                    0, // small error range timeout, in milliseconds
+                                                    0, // large error range, in inches
+                                                    0, // large error range timeout, in milliseconds
+                                                    0 // maximum acceleration (slew)
 );
 // angular PID controller
 lemlib::ControllerSettings angular_controller_small(2.1, // proportional gain (kP)
-                                              0.2, // integral gain (kI)
-                                              16, // derivative gain (kD)
-                                              5, // anti windup
-                                              0, // small error range, in degrees
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in degrees
-                                              0, // large error range timeout, in milliseconds
-                                              0 // maximum acceleration (slew)
+                                                    0.2, // integral gain (kI)
+                                                    16, // derivative gain (kD)
+                                                    5, // anti windup
+                                                    0, // small error range, in degrees
+                                                    0, // small error range timeout, in milliseconds
+                                                    0, // large error range, in degrees
+                                                    0, // large error range timeout, in milliseconds
+                                                    0 // maximum acceleration (slew)
 );
 // angular PID controller
-lemlib::ControllerSettings angular_controller_big(2.1, // proportional gain (kP)
-                                              0.2, // integral gain (kI)
-                                              16, // derivative gain (kD)
-                                              5, // anti windup
-                                              0, // small error range, in degrees
-                                              0, // small error range timeout, in milliseconds
-                                              0, // large error range, in degrees
-                                              0, // large error range timeout, in milliseconds
-                                              0 // maximum acceleration (slew)
+lemlib::ControllerSettings angular_controller_big  (0, // proportional gain (kP)
+                                                    0, // integral gain (kI)
+                                                    0, // derivative gain (kD)
+                                                    0, // anti windup
+                                                    0, // small error range, in degrees
+                                                    0, // small error range timeout, in milliseconds
+                                                    0, // large error range, in degrees
+                                                    0, // large error range timeout, in milliseconds
+                                                    0 // maximum acceleration (slew)
 );
 // create the chassis
 lemlib::Chassis chassis_small(drivetrain, lateral_controller_small, angular_controller_small, sensors);
