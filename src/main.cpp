@@ -8,12 +8,13 @@
 
 void screen_print() {    
     pros::lcd::initialize();
+    master.clear();
     pros::Task screen_task([&]() {
         while (true) {
             // optical sensor data
-            pros::lcd::print(2, "Proximity: %i", (int)optical_block.get_proximity());
-            pros::lcd::print(3, "Hue: %f", optical_block.get_hue());
-            pros::lcd::print(4, "RGB: %f %f %f %f", 
+            pros::lcd::print(3, "Proximity: %i", (int)optical_block.get_proximity());
+            pros::lcd::print(4, "Hue: %f", optical_block.get_hue());
+            pros::lcd::print(5, "RGB: %f %f %f %f", 
                 optical_block.get_rgb().red, 
                 optical_block.get_rgb().green, 
                 optical_block.get_rgb().blue, 
@@ -23,7 +24,9 @@ void screen_print() {
             // odom position
             pros::lcd::print(0, "X: %f", chassis.getPose().x);
             pros::lcd::print(1, "Y: %f", chassis.getPose().y);
-            pros::lcd::print(2, "Theta: %f", reduce_0_to_360(chassis.getPose().theta));
+            pros::lcd::print(2, "Theta: %.2f", reduce_0_to_360(imu_1.get_rotation()));
+
+            master.print(0, 0, "I: %f", reduce_0_to_360(imu_1.get_rotation()));
             // delay to save resources
             pros::delay(20);
         }
@@ -31,8 +34,16 @@ void screen_print() {
 }
 
 void initialize() {
-    lvgl_auton_selector(red_right_autons, red_left_autons, blue_right_autons, blue_left_autons, skills_auton);
+    //lvgl_auton_selector(red_right_autons, red_left_autons, blue_right_autons, blue_left_autons, skills_auton);
     pros::delay(500);
+    lv_obj_clean(lv_screen_active());
+    pros::delay(200);
+
+    pros::lcd::initialize();
+    pros::delay(200);
+    master.clear();
+    pros::Task screen_task(screen_print);
+
 
     imu_1.set_data_rate(5);
     imu_2.set_data_rate(5);
@@ -81,10 +92,18 @@ void opcontrol() {
     SortColor = Color::blue;
     //pros::Task d_color_sort         (ColorSort);
 
-    pros::Task d_drivetrain_control (DrivetrainControl);
-    pros::Task d_intake_control     (IntakeControl);
-    pros::Task d_storage_control    (StorageControl);
-    pros::Task d_loader_control     (LoaderControl);
+    // pros::Task d_drivetrain_control (DrivetrainControl);
+    // pros::Task d_intake_control     (IntakeControl);
+    // pros::Task d_storage_control    (StorageControl);
+    // pros::Task d_loader_control     (LoaderControl);
 
-    //autonomous();
+    
+    chassis.calibrate(); // calibrate sensors
+    pros::delay(1000);
+    
+    chassis.turnToHeading(180, 3000);
+    chassis.turnToHeading(0, 3000);
+    chassis.turnToHeading(90, 3000);
+    chassis.turnToHeading(0, 3000);
+    pros::delay(1000);
 }
