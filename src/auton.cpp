@@ -70,5 +70,6 @@ void auton_red_right_2() {
 }
 
 void auton_skills() {
+    // SKILLS: we can collect the blocks and when we want to get blocks of only one color we can use color sort so that instead of ejecting the wrong color, it makes the wrong color go back into storage
     pros::lcd::print(0, "hi from skills!");
 }

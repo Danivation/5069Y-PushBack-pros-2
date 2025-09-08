@@ -14,15 +14,15 @@ void DrivetrainControl() {
     float throttle;
     float turn;
     while (true) {
-        throttle = DeadBand(THROTTLE_AXIS, 5);
-        turn = DeadBand(TURN_AXIS, 5);
+        throttle = DeadBand(THROTTLE_AXIS, 2);
+        turn = DeadBand(TURN_AXIS, 2);
         left_mg.move(throttle + turn);
         right_mg.move(throttle - turn);
         pros::delay(10);
     }
 }
 
-bool StorageEnabled = false;
+bool StorageDrain = false;
 void IntakeControl() {
     while (true) {
         if (INTAKE_TO_STORAGE) {
@@ -30,30 +30,26 @@ void IntakeControl() {
             if (!ColorStop) intake_front.move_voltage(12000);
             intake_top.move_voltage(-12000);
             intake_back.brake();
-        }
-        if (INTAKE_TO_LOW_GOAL) {
+        } else if (INTAKE_TO_LOW_GOAL) {
             intake_bottom.move_voltage(-12000);
-            intake_front.move_voltage(-12000);
-            intake_top.move_voltage(12000);
-            if (StorageEnabled) intake_back.move_voltage(12000);
+            intake_front.brake();
+            intake_top.brake();
+            if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
-        }
-        if (INTAKE_TO_MID_GOAL) {
-            intake_bottom.move_voltage(12000);
+        } else if (INTAKE_TO_MID_GOAL) {
             // figure out some way to get it to go to high goal if it gets color sorted here
+            intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(-12000);
-            intake_top.move_voltage(12000);
-            if (StorageEnabled) intake_back.move_voltage(12000);
+            intake_top.brake();
+            if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
-        }
-        if (INTAKE_TO_HIGH_GOAL) {
+        } else if (INTAKE_TO_HIGH_GOAL) {
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
             intake_top.move_voltage(12000);
-            if (StorageEnabled) intake_back.move_voltage(12000);
+            if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
-        }
-        if (!INTAKE_TO_STORAGE && !INTAKE_TO_LOW_GOAL && !INTAKE_TO_MID_GOAL && !INTAKE_TO_HIGH_GOAL && !STORAGE_REVERSE_TOGGLE) {
+        } else {
             intake_bottom.brake();
             intake_front.brake();
             intake_top.brake();
@@ -68,6 +64,14 @@ void StorageControl() {
     while (true) {
         waitUntil(!STORAGE_DRAIN_TOGGLE);
         waitUntil(STORAGE_DRAIN_TOGGLE);
-        StorageEnabled = !StorageEnabled;
+        StorageDrain = !StorageDrain;
+    }
+}
+
+void LoaderControl() {
+    while (true) {
+        waitUntil(!LOADER_TOGGLE);
+        waitUntil(LOADER_TOGGLE);
+        loader_piston.toggle();
     }
 }

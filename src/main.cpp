@@ -20,13 +20,10 @@ void screen_print() {
                 optical_block.get_rgb().brightness
             );
 
-            // print robot location to the brain screen
-            // pros::lcd::print(0, "X: %f", chassis.getPose().x); // x
-            // pros::lcd::print(1, "Y: %f", chassis.getPose().y); // y
-            // pros::lcd::print(2, "Theta: %f", reduce_0_to_360(chassis.getPose().theta)); // heading
-            //pros::lcd::print(3, "Horiz: %f", horizontal_rotation.get_position());
-            //pros::lcd::print(4, "Vert: %f", vertical_rotation.get_position());
-            //printf("(%f,%f),", chassis.getPose().x, chassis.getPose().y);
+            // odom position
+            pros::lcd::print(0, "X: %f", chassis.getPose().x);
+            pros::lcd::print(1, "Y: %f", chassis.getPose().y);
+            pros::lcd::print(2, "Theta: %f", reduce_0_to_360(chassis.getPose().theta));
             // delay to save resources
             pros::delay(20);
         }
@@ -47,8 +44,6 @@ void initialize() {
     intake_top.set_brake_mode(pros::MotorBrake::brake);
     optical_block.set_led_pwm(100);
     optical_block.set_integration_time(5);
-
-    //screen_print();
 }
 
 void competition_initialize() {
@@ -89,6 +84,7 @@ void opcontrol() {
     pros::Task d_drivetrain_control (DrivetrainControl);
     pros::Task d_intake_control     (IntakeControl);
     pros::Task d_storage_control    (StorageControl);
+    pros::Task d_loader_control     (LoaderControl);
 
     //autonomous();
 }
