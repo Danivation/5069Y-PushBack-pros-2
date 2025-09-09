@@ -42,10 +42,10 @@ lemlib::ControllerSettings lateral_controller_big  (7.5, // proportional gain (k
                                                     0.1, // integral gain (kI)
                                                     40, // derivative gain (kD)
                                                     1, // anti windup
-                                                    0.5, // small error range, in inches
-                                                    100, // small error range timeout, in milliseconds
-                                                    3, // large error range, in inches
-                                                    1000, // large error range timeout, in milliseconds
+                                                    0, // small error range, in inches
+                                                    0, // small error range timeout, in milliseconds
+                                                    0, // large error range, in inches
+                                                    0, // large error range timeout, in milliseconds
                                                     80 // maximum acceleration (slew)
 );
 // angular PID controller
@@ -70,8 +70,10 @@ lemlib::ControllerSettings angular_controller_big  (1.9, // proportional gain (k
                                                     1000, // large error range timeout, in milliseconds
                                                     0 // maximum acceleration (slew)
 );
-// create the chassis
+// small linear & angular
 lemlib::Chassis chassis_small(drivetrain, lateral_controller_small, angular_controller_small, sensors);
+// big linear & angular
 lemlib::Chassis chassis_big(drivetrain, lateral_controller_big, angular_controller_big, sensors);
+// big linear & small angular
 lemlib::Chassis chassis_mtp(drivetrain, lateral_controller_big, angular_controller_small, sensors);
 CustomChassis chassis(&chassis_small, &chassis_big, &chassis_mtp, 100, 10);

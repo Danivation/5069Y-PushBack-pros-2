@@ -91,11 +91,12 @@ extern pros::adi::Pneumatics loader_piston;
 
 extern lemlib::Chassis chassis_small;
 extern lemlib::Chassis chassis_big;
+extern lemlib::Chassis chassis_mtp;
 extern CustomChassis chassis;
 
-#define waitUntil(condition)                                                   \
-  do {                                                                         \
-    pros::delay(5);                                                      \
+#define waitUntil(condition)    \
+  do {                          \
+    pros::delay(5);             \
   } while (!(condition))
 
 /**

@@ -66,6 +66,7 @@ class CustomChassis {
         void setPose(float x, float y, float theta, bool radians = false) {
             chassis_small->setPose(x, y, theta, radians);
             chassis_big->setPose(x, y, theta, radians);
+            chassis_mtp->setPose(x, y, theta, radians);
         }
         /**
          * @brief Set the pose of the chassis
@@ -87,6 +88,7 @@ class CustomChassis {
         void setPose(Pose pose, bool radians = false) {
             chassis_small->setPose(pose, radians);
             chassis_big->setPose(pose, radians);
+            chassis_mtp->setPose(pose, radians);
         }
         /**
          * @brief Get the pose of the chassis
@@ -140,6 +142,7 @@ class CustomChassis {
         void waitUntil(float dist) {
             chassis_small->waitUntil(dist);
             chassis_big->waitUntil(dist);
+            chassis_mtp->waitUntil(dist);
         }
         /**
          * @brief Wait until the robot has completed the path
@@ -157,6 +160,7 @@ class CustomChassis {
         void waitUntilDone() {
             if (chassis_small->isInMotion()) chassis_small->waitUntilDone();
             if (chassis_big->isInMotion()) chassis_big->waitUntilDone();
+            if (chassis_mtp->isInMotion()) chassis_mtp->waitUntilDone();
         }
         /**
          * @brief Sets the brake mode of the drivetrain motors
@@ -176,6 +180,7 @@ class CustomChassis {
         void setBrakeMode(pros::motor_brake_mode_e mode) {
             chassis_small->setBrakeMode(mode);
             chassis_big->setBrakeMode(mode);
+            chassis_mtp->setBrakeMode(mode);
         }
         /**
          * @brief Turn the chassis so it is facing the target point
@@ -481,6 +486,7 @@ class CustomChassis {
         void tank(int left, int right, bool disableDriveCurve = false) {
             chassis_small->tank(left, right, disableDriveCurve);
             chassis_big->tank(left, right, disableDriveCurve);
+            chassis_mtp->tank(left, right, disableDriveCurve);
         }
         /**
          * @brief Control the robot during the driver using the arcade drive control scheme. In this control scheme one
@@ -520,6 +526,7 @@ class CustomChassis {
         void arcade(int throttle, int turn, bool disableDriveCurve = false, float desaturateBias = 0.5) {
             chassis_small->arcade(throttle, turn, disableDriveCurve, desaturateBias);
             chassis_big->arcade(throttle, turn, disableDriveCurve, desaturateBias);
+            chassis_mtp->arcade(throttle, turn, disableDriveCurve, desaturateBias);
         }
         /**
          * @brief Control the robot during the driver using the curvature drive control scheme. This control scheme is
@@ -554,6 +561,7 @@ class CustomChassis {
         void curvature(int throttle, int turn, bool disableDriveCurve = false) {
             chassis_small->curvature(throttle, turn, disableDriveCurve);
             chassis_big->curvature(throttle, turn, disableDriveCurve);
+            chassis_mtp->curvature(throttle, turn, disableDriveCurve);
         }
         /**
          * @brief Cancels the currently running motion.
@@ -589,6 +597,7 @@ class CustomChassis {
         void cancelMotion() {
             chassis_small->cancelMotion();
             chassis_big->cancelMotion();
+            chassis_mtp->cancelMotion();
         }
         /**
          * @brief Cancels all motions, even those that are queued.
@@ -624,6 +633,7 @@ class CustomChassis {
         void cancelAllMotions() {
             chassis_small->cancelAllMotions();
             chassis_big->cancelAllMotions();
+            chassis_mtp->cancelAllMotions();
         }
         /**
          * @return whether a motion is currently running
@@ -638,7 +648,7 @@ class CustomChassis {
          * @endcode
          */
         bool isInMotion() const {
-            return chassis_small->isInMotion() || chassis_big->isInMotion();
+            return chassis_small->isInMotion() || chassis_big->isInMotion() || chassis_mtp->isInMotion();
         }
         /**
          * @brief Resets the x and y position of the robot
@@ -656,6 +666,7 @@ class CustomChassis {
         void resetLocalPosition() {
             chassis_small->resetLocalPosition();
             chassis_big->resetLocalPosition();
+            chassis_mtp->resetLocalPosition();
         }
     protected:
         Chassis* chassis_small;
