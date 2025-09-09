@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "5069Y-PushBack-pros-2",
+    "project_name": "5069Y-PushBack",
     "target": "v5",
     "templates": {
       "LemLib": {
@@ -635,7 +635,8 @@
       }
     },
     "upload_options": {
-      "slot": 1
+      "slot": 1,
+      "description": "5069Y competition code for 25-26 Push Back"
     },
     "use_early_access": false
   }
