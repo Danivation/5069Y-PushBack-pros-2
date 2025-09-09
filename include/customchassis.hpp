@@ -20,7 +20,7 @@ class CustomChassis {
          *
          * @example main.cpp
          */
-        CustomChassis(lemlib::Chassis* chassis_small, lemlib::Chassis* chassis_big, float small_turn_threshold) : chassis_small(chassis_small), chassis_big(chassis_big), small_turn_threshold(small_turn_threshold) {}
+        CustomChassis(lemlib::Chassis* chassis_small, lemlib::Chassis* chassis_big, lemlib::Chassis* chassis_mtp, float small_turn_threshold, float small_drive_threshold) : chassis_small(chassis_small), chassis_big(chassis_big), chassis_mtp(chassis_mtp), small_turn_threshold(small_turn_threshold), small_drive_threshold(small_drive_threshold) {}
         /**
          * @brief Calibrate the chassis sensors. THis should be called in the initialize function
          *
@@ -210,7 +210,7 @@ class CustomChassis {
          */
         void turnToPoint(float x, float y, int timeout, TurnToPointParams params = {}, bool async = true) {
             if (isInMotion()) waitUntilDone();
-            if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
+            if (getPose().angle(Pose{x, y}) < small_turn_threshold || getPose().angle(Pose{x, y}) > 360-small_turn_threshold) {
                 chassis_small->turnToPoint(x, y, timeout, params, async);
             } else {
                 chassis_big->turnToPoint(x, y, timeout, params, async);
@@ -337,7 +337,7 @@ class CustomChassis {
         void swingToPoint(float x, float y, DriveSide lockedSide, int timeout, SwingToPointParams params = {},
                           bool async = true) {
             if (isInMotion()) waitUntilDone();
-            if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
+            if (getPose().angle(Pose{x, y}) < small_turn_threshold || getPose().angle(Pose{x, y}) > 360-small_turn_threshold) {
                 chassis_small->swingToPoint(x, y, lockedSide, timeout, params, async);
             } else {
                 chassis_big->swingToPoint(x, y, lockedSide, timeout, params, async);
@@ -378,10 +378,10 @@ class CustomChassis {
          */
         void moveToPose(float x, float y, float theta, int timeout, MoveToPoseParams params = {}, bool async = true) {
             if (isInMotion()) waitUntilDone();
-            if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
-                chassis_small->moveToPose(x, y, theta, timeout, params, async);
+            if (std::fabs(getPose().distance(Pose{x, y})) < small_drive_threshold) {
+                chassis_small->moveToPose(x, y, theta, timeout, params, async);     // small linear, small angular
             } else {
-                chassis_big->moveToPose(x, y, theta, timeout, params, async);
+                chassis_mtp->moveToPose(x, y, theta, timeout, params, async);       // big linear, small angular
             }
         }
         /**
@@ -413,10 +413,10 @@ class CustomChassis {
          */
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true) {
             if (isInMotion()) waitUntilDone();
-            if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
-                chassis_small->moveToPoint(x, y, timeout, params, async);
+            if (std::fabs(getPose().distance(Pose{x, y})) < small_drive_threshold) {
+                chassis_small->moveToPoint(x, y, timeout, params, async);   // small linear, small angular
             } else {
-                chassis_big->moveToPoint(x, y, timeout, params, async);
+                chassis_mtp->moveToPoint(x, y, timeout, params, async);     // big linear, small angular
             }
         }
         /**
@@ -660,7 +660,9 @@ class CustomChassis {
     protected:
         Chassis* chassis_small;
         Chassis* chassis_big;
+        Chassis* chassis_mtp;
         float small_turn_threshold;
+        float small_drive_threshold;
     private:
         pros::Mutex mutex;
 };
