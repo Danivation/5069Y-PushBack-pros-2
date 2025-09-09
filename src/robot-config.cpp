@@ -27,15 +27,15 @@ lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW
 // tracker wheel configuration
 lemlib::OdomSensors sensors(&vertical_tracker, nullptr, &horizontal_tracker, nullptr, &imu_1);
 // lateral PID controller
-lemlib::ControllerSettings lateral_controller_small(0, // proportional gain (kP)
-                                                    0, // integral gain (kI)
-                                                    0, // derivative gain (kD)
-                                                    0, // anti windup
+lemlib::ControllerSettings lateral_controller_small(7.5, // proportional gain (kP)
+                                                    0.1, // integral gain (kI)
+                                                    18, // derivative gain (kD)
+                                                    1, // anti windup
                                                     0, // small error range, in inches
                                                     0, // small error range timeout, in milliseconds
                                                     0, // large error range, in inches
                                                     0, // large error range timeout, in milliseconds
-                                                    0 // maximum acceleration (slew)
+                                                    80 // maximum acceleration (slew)
 );
 // lateral PID controller
 lemlib::ControllerSettings lateral_controller_big  (7.5, // proportional gain (kP)

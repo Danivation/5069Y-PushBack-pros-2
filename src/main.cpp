@@ -113,17 +113,6 @@ void opcontrol() {
     } else if (program_mode == 1) {
         chassis.setPose(0, 0, 0);
 
-        chassis.moveToPoint(0, 6, 5000);
-        chassis.moveToPoint(0, 0, 5000, {.forwards = false});
-        chassis.moveToPoint(0, 12, 5000);
-        chassis.moveToPoint(0, 0, 5000, {.forwards = false});
-        chassis.moveToPoint(0, 18, 5000);
-        chassis.moveToPoint(0, 0, 5000, {.forwards = false});
-        chassis.moveToPoint(0, 24, 5000);
-        chassis.moveToPoint(0, 0, 5000, {.forwards = false});
-        chassis.moveToPoint(0, 36, 5000);
-        chassis.moveToPoint(0, 0, 5000, {.forwards = false});
-        chassis.moveToPoint(0, 48, 5000);
-        chassis.moveToPoint(0, 0, 5000, {.forwards = false});
+        chassis.moveToPose(-24, 24, 270, 10000, {.horizontalDrift = 2, .lead = 0.3});
     }
 }
