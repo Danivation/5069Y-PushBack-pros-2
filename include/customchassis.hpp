@@ -44,7 +44,7 @@ class CustomChassis {
          */
         void calibrate(bool calibrateIMU = true) {
             chassis_small->calibrate(calibrateIMU);
-            chassis_big->calibrate(calibrateIMU);
+            //chassis_big->calibrate(false);
         }
         /**
          * @brief Set the pose of the chassis
@@ -155,8 +155,8 @@ class CustomChassis {
          * @endcode
          */
         void waitUntilDone() {
-            chassis_small->waitUntilDone();
-            chassis_big->waitUntilDone();
+            if (chassis_small->isInMotion()) chassis_small->waitUntilDone();
+            if (chassis_big->isInMotion()) chassis_big->waitUntilDone();
         }
         /**
          * @brief Sets the brake mode of the drivetrain motors
@@ -209,6 +209,7 @@ class CustomChassis {
          * @endcode
          */
         void turnToPoint(float x, float y, int timeout, TurnToPointParams params = {}, bool async = true) {
+            if (isInMotion()) waitUntilDone();
             if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
                 chassis_small->turnToPoint(x, y, timeout, params, async);
             } else {
@@ -243,6 +244,7 @@ class CustomChassis {
          * @endcode
          */
         void turnToHeading(float theta, int timeout, TurnToHeadingParams params = {}, bool async = true) {
+            if (isInMotion()) waitUntilDone();
             float delta = std::fmod(theta - getPose().theta + 540.0f, 360.0f) - 180.0f;
             if (std::fabs(delta) < small_turn_threshold) {
                 chassis_small->turnToHeading(theta, timeout, params, async);
@@ -285,6 +287,7 @@ class CustomChassis {
          */
         void swingToHeading(float theta, DriveSide lockedSide, int timeout, SwingToHeadingParams params = {},
                             bool async = true) {
+            if (isInMotion()) waitUntilDone();
             float delta = std::fmod(theta - getPose().theta + 540.0f, 360.0f) - 180.0f;
             if (std::fabs(delta) < small_turn_threshold) {
                 chassis_small->swingToHeading(theta, lockedSide, timeout, params, async);
@@ -333,6 +336,7 @@ class CustomChassis {
          */
         void swingToPoint(float x, float y, DriveSide lockedSide, int timeout, SwingToPointParams params = {},
                           bool async = true) {
+            if (isInMotion()) waitUntilDone();
             if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
                 chassis_small->swingToPoint(x, y, lockedSide, timeout, params, async);
             } else {
@@ -373,6 +377,7 @@ class CustomChassis {
          * @endcode
          */
         void moveToPose(float x, float y, float theta, int timeout, MoveToPoseParams params = {}, bool async = true) {
+            if (isInMotion()) waitUntilDone();
             if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
                 chassis_small->moveToPose(x, y, theta, timeout, params, async);
             } else {
@@ -407,6 +412,7 @@ class CustomChassis {
          * @endcode
          */
         void moveToPoint(float x, float y, int timeout, MoveToPointParams params = {}, bool async = true) {
+            if (isInMotion()) waitUntilDone();
             if (getPose().angle(Pose{x, y}) < 90 || getPose().angle(Pose{x, y}) > 270) {
                 chassis_small->moveToPoint(x, y, timeout, params, async);
             } else {
@@ -441,6 +447,7 @@ class CustomChassis {
          * @endcode
          */
         void follow(const asset& path, float lookahead, int timeout, bool forwards = true, bool async = true) {
+            if (isInMotion()) waitUntilDone();
             chassis_small->follow(path, lookahead, timeout, async);
         }
         /**

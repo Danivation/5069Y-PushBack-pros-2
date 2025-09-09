@@ -11,21 +11,23 @@ void screen_print() {
     //pros::lcd::initialize();
     master.clear();
     while (true) {
-        // optical sensor data
-        pros::lcd::print(3, "Proximity: %i", (int)optical_block.get_proximity());
-        pros::lcd::print(4, "Hue: %f", optical_block.get_hue());
-        pros::lcd::print(5, "RGB: %f %f %f %f", 
-            optical_block.get_rgb().red, 
-            optical_block.get_rgb().green, 
-            optical_block.get_rgb().blue, 
-            optical_block.get_rgb().brightness
-        );
-
         // odom position
         pros::lcd::print(0, "X: %f", chassis.getPose().x);
         pros::lcd::print(1, "Y: %f", chassis.getPose().y);
-        pros::lcd::print(2, "Theta: %.2f", reduce_0_to_360(imu_1.get_rotation()));
-        master.print(0, 0, "I: %.2f", reduce_0_to_360(imu_1.get_rotation()));
+        pros::lcd::print(2, "Theta: %.2f, %.2f", reduce_0_to_360(chassis.getPose().theta), reduce_0_to_360(chassis_big.getPose().theta));
+
+        // optical sensor data
+        pros::lcd::print(3, "Proximity: %i", (int)optical_block.get_proximity());
+        pros::lcd::print(4, "Hue: %f", optical_block.get_hue());
+        pros::lcd::print(5, "RGB: (%.2f, %.2f, %.2f, %.2f)", 
+            optical_block.get_rgb().red,
+            optical_block.get_rgb().green,
+            optical_block.get_rgb().blue,
+            optical_block.get_rgb().brightness
+        );
+
+        // controller screen
+        master.print(0, 0, "I: %.2f", reduce_0_to_360(chassis.getPose().theta));
         master.print(1, 0, "%s", StorageDrain ? "Draining" : "Intaking");
         master.print(2, 0, "B: %d%%", pros::battery::get_capacity());
 
@@ -53,6 +55,7 @@ void initialize() {
         // set up llemu screen
         lv_obj_clean(lv_screen_active()); // get rid of lvgl
         pros::lcd::initialize(); // initialze llemu
+        master.clear();
     
         pros::lcd::print(0, "Calibrating...");
         chassis.calibrate();
@@ -108,13 +111,16 @@ void opcontrol() {
         pros::Task d_storage_control    (StorageControl);
         pros::Task d_loader_control     (LoaderControl);
     } else if (program_mode == 1) {
+        chassis.setPose(0, 0, 0);
+
         chassis.turnToHeading(45, 2000);
         chassis.turnToHeading(0, 2000);
         chassis.turnToHeading(90, 2000);
         chassis.turnToHeading(0, 2000);
-        // chassis.turnToHeading(135, 2000);
-        // chassis.turnToHeading(0, 2000);
-        // chassis.turnToHeading(180, 2000);
-        // chassis.turnToHeading(0, 2000);
+
+        chassis.turnToHeading(135, 2000);
+        chassis.turnToHeading(0, 2000);
+        chassis.turnToHeading(180, 2000);
+        chassis.turnToHeading(0, 2000);
     }
 }
