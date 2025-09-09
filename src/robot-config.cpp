@@ -49,10 +49,10 @@ lemlib::ControllerSettings lateral_controller_big  (0, // proportional gain (kP)
                                                     0 // maximum acceleration (slew)
 );
 // angular PID controller
-lemlib::ControllerSettings angular_controller_small(2.2, // proportional gain (kP)
+lemlib::ControllerSettings angular_controller_small(2.3, // proportional gain (kP)
                                                     0.2, // integral gain (kI)
-                                                    15, // derivative gain (kD)
-                                                    5, // anti windup
+                                                    13.7, // derivative gain (kD)
+                                                    2, // anti windup
                                                     0, // small error range, in degrees
                                                     0, // small error range timeout, in milliseconds
                                                     0, // large error range, in degrees
@@ -60,7 +60,7 @@ lemlib::ControllerSettings angular_controller_small(2.2, // proportional gain (k
                                                     0 // maximum acceleration (slew)
 );
 // angular PID controller
-lemlib::ControllerSettings angular_controller_big  (0.2, // proportional gain (kP)
+lemlib::ControllerSettings angular_controller_big  (0, // proportional gain (kP)
                                                     0, // integral gain (kI)
                                                     0, // derivative gain (kD)
                                                     0, // anti windup

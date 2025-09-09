@@ -14,7 +14,7 @@ void screen_print() {
         // odom position
         pros::lcd::print(0, "X: %f", chassis.getPose().x);
         pros::lcd::print(1, "Y: %f", chassis.getPose().y);
-        pros::lcd::print(2, "Theta: %.2f, %.2f", reduce_0_to_360(chassis.getPose().theta), reduce_0_to_360(chassis_big.getPose().theta));
+        pros::lcd::print(2, "Theta: %.2f", reduce_0_to_360(chassis.getPose().theta));
 
         // optical sensor data
         pros::lcd::print(3, "Proximity: %i", (int)optical_block.get_proximity());
