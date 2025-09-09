@@ -53,21 +53,21 @@ lemlib::ControllerSettings angular_controller_small(2.3, // proportional gain (k
                                                     0.2, // integral gain (kI)
                                                     13.7, // derivative gain (kD)
                                                     2, // anti windup
-                                                    0, // small error range, in degrees
-                                                    0, // small error range timeout, in milliseconds
-                                                    0, // large error range, in degrees
-                                                    0, // large error range timeout, in milliseconds
+                                                    3, // small error range, in degrees
+                                                    1000, // small error range timeout, in milliseconds
+                                                    1, // large error range, in degrees
+                                                    100, // large error range timeout, in milliseconds
                                                     0 // maximum acceleration (slew)
 );
 // angular PID controller
-lemlib::ControllerSettings angular_controller_big  (0, // proportional gain (kP)
-                                                    0, // integral gain (kI)
-                                                    0, // derivative gain (kD)
-                                                    0, // anti windup
-                                                    0, // small error range, in degrees
-                                                    0, // small error range timeout, in milliseconds
-                                                    0, // large error range, in degrees
-                                                    0, // large error range timeout, in milliseconds
+lemlib::ControllerSettings angular_controller_big  (2.3, // proportional gain (kP)
+                                                    0.2, // integral gain (kI)
+                                                    13.7, // derivative gain (kD)
+                                                    3, // anti windup
+                                                    5, // small error range, in degrees
+                                                    1000, // small error range timeout, in milliseconds
+                                                    1, // large error range, in degrees
+                                                    200, // large error range timeout, in milliseconds
                                                     0 // maximum acceleration (slew)
 );
 // create the chassis

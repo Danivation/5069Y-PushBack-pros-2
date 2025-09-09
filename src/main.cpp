@@ -113,10 +113,10 @@ void opcontrol() {
     } else if (program_mode == 1) {
         chassis.setPose(0, 0, 0);
 
-        chassis.turnToHeading(45, 2000);
-        chassis.turnToHeading(0, 2000);
-        chassis.turnToHeading(90, 2000);
-        chassis.turnToHeading(0, 2000);
+        // chassis.turnToHeading(45, 2000);
+        // chassis.turnToHeading(0, 2000);
+        // chassis.turnToHeading(90, 2000);
+        // chassis.turnToHeading(0, 2000);
 
         chassis.turnToHeading(135, 2000);
         chassis.turnToHeading(0, 2000);
