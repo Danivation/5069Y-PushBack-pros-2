@@ -25,7 +25,7 @@ void screen_print() {
         pros::lcd::print(0, "X: %f", chassis.getPose().x);
         pros::lcd::print(1, "Y: %f", chassis.getPose().y);
         pros::lcd::print(2, "Theta: %.2f", reduce_0_to_360(imu_1.get_rotation()));
-        master.print(0, 0, "I: %f", reduce_0_to_360(imu_1.get_rotation()));
+        master.print(0, 0, "I: %.2f", reduce_0_to_360(imu_1.get_rotation()));
         master.print(1, 0, "%s", StorageDrain ? "Draining" : "Intaking");
         master.print(2, 0, "B: %d%%", pros::battery::get_capacity());
 
@@ -110,11 +110,11 @@ void opcontrol() {
     } else if (program_mode == 1) {
         chassis.turnToHeading(45, 2000);
         chassis.turnToHeading(0, 2000);
-        // chassis.turnToHeading(90, 2000);
-        // chassis.turnToHeading(0, 2000);
+        chassis.turnToHeading(90, 2000);
+        chassis.turnToHeading(0, 2000);
         // chassis.turnToHeading(135, 2000);
         // chassis.turnToHeading(0, 2000);
-        chassis.turnToHeading(180, 2000);
-        chassis.turnToHeading(0, 2000);
+        // chassis.turnToHeading(180, 2000);
+        // chassis.turnToHeading(0, 2000);
     }
 }

@@ -73,4 +73,4 @@ lemlib::ControllerSettings angular_controller_big  (0, // proportional gain (kP)
 // create the chassis
 lemlib::Chassis chassis_small(drivetrain, lateral_controller_small, angular_controller_small, sensors);
 lemlib::Chassis chassis_big(drivetrain, lateral_controller_big, angular_controller_big, sensors);
-CustomChassis chassis(&chassis_small, &chassis_big);
+CustomChassis chassis(&chassis_small, &chassis_big, 100);

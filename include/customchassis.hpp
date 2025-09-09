@@ -20,7 +20,7 @@ class CustomChassis {
          *
          * @example main.cpp
          */
-        CustomChassis(lemlib::Chassis* chassis_small, lemlib::Chassis* chassis_big) : chassis_small(chassis_small), chassis_big(chassis_big) {}
+        CustomChassis(lemlib::Chassis* chassis_small, lemlib::Chassis* chassis_big, float small_turn_threshold) : chassis_small(chassis_small), chassis_big(chassis_big), small_turn_threshold(small_turn_threshold) {}
         /**
          * @brief Calibrate the chassis sensors. THis should be called in the initialize function
          *
@@ -243,8 +243,8 @@ class CustomChassis {
          * @endcode
          */
         void turnToHeading(float theta, int timeout, TurnToHeadingParams params = {}, bool async = true) {
-            if (std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) < 90 ||
-                std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) > 270) {
+            float delta = std::fmod(theta - getPose().theta + 540.0f, 360.0f) - 180.0f;
+            if (std::fabs(delta) < small_turn_threshold) {
                 chassis_small->turnToHeading(theta, timeout, params, async);
             } else {
                 chassis_big->turnToHeading(theta, timeout, params, async);
@@ -285,8 +285,8 @@ class CustomChassis {
          */
         void swingToHeading(float theta, DriveSide lockedSide, int timeout, SwingToHeadingParams params = {},
                             bool async = true) {
-            if (std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) < 90 ||
-                std::fabs(std::fmod((float)theta - (float)getPose().theta + 360.0f, 360.0f)) > 270) {
+            float delta = std::fmod(theta - getPose().theta + 540.0f, 360.0f) - 180.0f;
+            if (std::fabs(delta) < small_turn_threshold) {
                 chassis_small->swingToHeading(theta, lockedSide, timeout, params, async);
             } else {
                 chassis_big->swingToHeading(theta, lockedSide, timeout, params, async);
@@ -653,6 +653,7 @@ class CustomChassis {
     protected:
         Chassis* chassis_small;
         Chassis* chassis_big;
+        float small_turn_threshold;
     private:
         pros::Mutex mutex;
 };
