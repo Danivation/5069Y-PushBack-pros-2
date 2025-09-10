@@ -38,13 +38,11 @@ void screen_print() {
 
 void initialize() {
     imu_1.set_data_rate(5);
-    imu_2.set_data_rate(5);
     right_mg.set_brake_mode_all(pros::MotorBrake::coast);
     left_mg.set_brake_mode_all(pros::MotorBrake::coast);
     intake_bottom.set_brake_mode(pros::MotorBrake::brake);
     intake_back.set_brake_mode(pros::MotorBrake::brake);
     intake_front.set_brake_mode(pros::MotorBrake::brake);
-    intake_top.set_brake_mode(pros::MotorBrake::brake);
     optical_block.set_led_pwm(100);
     optical_block.set_integration_time(5);
 

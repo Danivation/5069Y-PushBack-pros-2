@@ -67,21 +67,21 @@ float convert_mps_to_rpm() {
 
 void setInertial(float angle) {
     imu_1.set_rotation(angle);
-    imu_2.set_rotation(angle);
     imu_1.set_heading(angle);
-    imu_2.set_heading(angle);
 }
 
 float trueHeading() {
     // rotation is -inf to +inf, so averaging them will not have issues of 360-0 rollover
     // reducing back to 0-360 afterwards makes sure its in a good format for everything else
-    if (imu_1.is_installed() && imu_2.is_installed()) return reduce_0_to_360((imu_1.get_rotation() + imu_2.get_rotation()) / 2);
-    if (!imu_1.is_installed()) return reduce_0_to_360(imu_2.get_rotation());
-    if (!imu_2.is_installed()) return reduce_0_to_360(imu_1.get_rotation());
-    else return 0.0f;
+    // if (imu_1.is_installed() && imu_2.is_installed()) return reduce_0_to_360((imu_1.get_rotation() + imu_2.get_rotation()) / 2);
+    // if (!imu_1.is_installed()) return reduce_0_to_360(imu_2.get_rotation());
+    // if (!imu_2.is_installed()) return reduce_0_to_360(imu_1.get_rotation());
+    // else return 0.0f;
+    return 0;
 }
 
 float trueRotation() {
     // returns -inf to +inf true rotation
-    return ((imu_1.get_rotation() + imu_2.get_rotation()) / 2);
+    // return ((imu_1.get_rotation() + imu_2.get_rotation()) / 2);
+    return 0;
 }

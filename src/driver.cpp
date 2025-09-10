@@ -28,31 +28,26 @@ void IntakeControl() {
         if (INTAKE_TO_STORAGE) {
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
-            intake_top.move_voltage(-12000);
             intake_back.brake();
         } else if (INTAKE_TO_LOW_GOAL) {
             intake_bottom.move_voltage(-12000);
             intake_front.move_voltage(-12000);
-            intake_top.brake();
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
         } else if (INTAKE_TO_MID_GOAL) {
             // figure out some way to get it to go to high goal if it gets color sorted here
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(-12000);
-            intake_top.brake();
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
         } else if (INTAKE_TO_HIGH_GOAL) {
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
-            intake_top.move_voltage(12000);
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
         } else {
             intake_bottom.brake();
             intake_front.brake();
-            intake_top.brake();
             intake_back.brake();
         }
         

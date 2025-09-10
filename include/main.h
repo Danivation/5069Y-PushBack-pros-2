@@ -81,11 +81,9 @@ extern pros::Controller master;
 extern pros::MotorGroup left_mg;
 extern pros::MotorGroup right_mg;
 extern pros::Imu imu_1;
-extern pros::Imu imu_2;
 extern pros::Motor intake_bottom;
 extern pros::Motor intake_front;
 extern pros::Motor intake_back;
-extern pros::Motor intake_top;
 extern pros::Optical optical_block;
 extern pros::adi::Pneumatics loader_piston;
 

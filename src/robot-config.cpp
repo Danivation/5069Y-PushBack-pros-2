@@ -7,14 +7,12 @@ pros::Controller master(pros::E_CONTROLLER_MASTER);
 pros::Rotation vertical_rotation(-1);
 pros::Rotation horizontal_rotation(2);
 pros::Imu imu_1(3);
-pros::Imu imu_2(11);    // unused
 pros::MotorGroup left_mg({-4, 5, 6}, pros::MotorGearset::blue);
 pros::MotorGroup right_mg({7, -8, -9}, pros::MotorGearset::blue);
 pros::Optical optical_block(10);
 pros::Motor intake_back(17);
 pros::Motor intake_bottom(-18);
-pros::Motor intake_front(-19);
-pros::Motor intake_top(20);
+pros::Motor intake_front(-20);
 pros::adi::Pneumatics loader_piston('a', false);
 
 /**
