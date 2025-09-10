@@ -1,5 +1,5 @@
 #include "main.h"
-const int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first)
+const int program_mode = 0; // 0 = default (competition mode, driver first), 1 = testing (auton first)
 
 /**
  * auton selector flow:
@@ -115,7 +115,7 @@ void opcontrol() {
     } else if (program_mode == 1) {
         chassis.setPose(0, 0, 0);
 
-        chassis.follow(curve_txt, 5, 10000);
-        //chassis.moveToPose(-24, 24, 270, 10000, {.horizontalDrift = 2, .lead = 0.3});
+        //chassis.follow(curve_txt, 10, 10000);
+        chassis_small.moveToPose(-36, 24, 270, 10000, {.horizontalDrift = 2, .lead = 0.6});
     }
 }
