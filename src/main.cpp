@@ -102,6 +102,8 @@ void autonomous() {
     if (selected_auton.callback) selected_auton.callback();
 }
 
+ASSET(curve_txt);
+
 void opcontrol() {
     if (program_mode == 0) {
         SortColor = Color::blue;
@@ -113,6 +115,7 @@ void opcontrol() {
     } else if (program_mode == 1) {
         chassis.setPose(0, 0, 0);
 
-        chassis.moveToPose(-24, 24, 270, 10000, {.horizontalDrift = 2, .lead = 0.3});
+        chassis.follow(curve_txt, 5, 10000);
+        //chassis.moveToPose(-24, 24, 270, 10000, {.horizontalDrift = 2, .lead = 0.3});
     }
 }
