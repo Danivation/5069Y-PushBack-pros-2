@@ -29,22 +29,26 @@ void IntakeControl() {
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
             intake_back.brake();
+            if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_LOW_GOAL) {
             intake_bottom.move_voltage(-12000);
             intake_front.move_voltage(-12000);
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
+            if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_MID_GOAL) {
             // figure out some way to get it to go to high goal if it gets color sorted here
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(-12000);
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
+            if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_HIGH_GOAL) {
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
+            if (hood_piston.is_extended()) hood_piston.retract();
         } else {
             intake_bottom.brake();
             intake_front.brake();

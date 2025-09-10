@@ -85,6 +85,7 @@ extern pros::Motor intake_bottom;
 extern pros::Motor intake_front;
 extern pros::Motor intake_back;
 extern pros::Optical optical_block;
+extern pros::adi::Pneumatics hood_piston;
 extern pros::adi::Pneumatics loader_piston;
 
 extern lemlib::Chassis chassis_small;
