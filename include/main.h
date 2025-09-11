@@ -43,7 +43,6 @@
 #include "liblvgl/llemu.hpp"
 #include "liblvgl/lvgl.h"
 #include "lemlib/api.hpp"
-#include "5069yselectorlib/selector.hpp"
 
 /**
  * Standard library #includes go here
