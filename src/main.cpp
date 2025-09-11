@@ -112,13 +112,15 @@ ASSET(curve_txt);
 
 void opcontrol() {
     if (program_mode == 0) {
-        if (selected_auton.first == RED_RIGHT || selected_auton.first == RED_LEFT) {
-            SortColor = pros::Color::blue;
-        } else if (selected_auton.first == BLUE_RIGHT || selected_auton.first == BLUE_LEFT) {
-            SortColor = pros::Color::red;
-        } else {
-            SortColor = pros::Color::black; // sort none
-        }
+        SortColor = [&] -> pros::Color {
+            if (selected_auton.first == RED_RIGHT || selected_auton.first == RED_LEFT) {
+                return pros::Color::blue;
+            } else if (selected_auton.first == BLUE_RIGHT || selected_auton.first == BLUE_LEFT) {
+                return pros::Color::red;
+            } else {
+                return pros::Color::black; // sort nothing
+            }
+        }();
         //pros::Task d_color_sort         (ColorSort);
 
         pros::Task d_drivetrain_control (DrivetrainControl);
