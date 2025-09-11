@@ -71,7 +71,7 @@ void initialize() {
     }
 }
 
-std::pair<auton_mode_t, auton_descriptor_t> selected_auton;
+std::pair<auton_mode_t, auton_descriptor_t> selected_auton = { auton_mode_t::NONE, {""} };
 void competition_initialize() {
     lv_obj_clean(lv_screen_active()); // get rid of lvgl
     pros::lcd::initialize(); // initialze llemu
