@@ -9,7 +9,6 @@ const int program_mode = 0; // 0 = default (competition mode, driver first), 1 =
 
 void screen_print() {
     //pros::lcd::initialize();
-    master.clear();
     while (true) {
         // odom position
         pros::lcd::print(0, "X: %f", chassis.getPose().x);
@@ -26,12 +25,19 @@ void screen_print() {
             optical_block.get_rgb().brightness
         );
 
-        // controller screen
-        master.print(0, 0, "I: %.2f", reduce_0_to_360(chassis.getPose().theta));
-        master.print(1, 0, "%s", StorageDrain ? "Draining" : "Intaking");
-        master.print(2, 0, "B: %d%%", pros::battery::get_capacity());
-
         // delay to save resources
+        pros::delay(100);
+    }
+}
+
+void controller_print() {
+    master.clear();
+    while (true) {
+        master.print(0, 0, "I: %.2f", reduce_0_to_360(chassis.getPose().theta));
+        pros::delay(50);
+        master.print(1, 0, "%s", StorageDrain ? "Draining" : "Intaking");
+        pros::delay(50);
+        master.print(2, 0, "B: %d%%", pros::battery::get_capacity());
         pros::delay(50);
     }
 }
@@ -59,11 +65,13 @@ void initialize() {
         chassis.calibrate();
         chassis.setPose(0, 0, reduce_0_to_360(imu_1.get_rotation()));
 
-        // print stuff to the screen
+        // print stuff to the brain screen and controller
         pros::Task screen_task(screen_print);
+        pros::Task controller_task(controller_print);
     }
 }
 
+std::pair<auton_mode_t, auton_descriptor_t> selected_auton;
 void competition_initialize() {
     lv_obj_clean(lv_screen_active()); // get rid of lvgl
     pros::lcd::initialize(); // initialze llemu
@@ -72,7 +80,7 @@ void competition_initialize() {
     chassis.calibrate();
 
     if (program_mode == 0) {
-        std::pair<auton_mode_t, auton_descriptor_t> selected_auton = get_selected_auton();
+        selected_auton = get_selected_auton();
         std::string auton_name;
         if (selected_auton.first == RED_RIGHT) {
             auton_name = std::format("Red Right {} ({})", selected_auton.second.name, selected_auton.second.score);
@@ -96,20 +104,29 @@ void disabled() {}
 
 void autonomous() {
     pros::lcd::shutdown();
-    auton_descriptor_t selected_auton = get_selected_auton().second;
-    if (selected_auton.callback) selected_auton.callback();
+    auton_descriptor_t selected_auton_new = get_selected_auton().second;
+    if (selected_auton_new.callback) selected_auton_new.callback();
 }
 
 ASSET(curve_txt);
 
 void opcontrol() {
     if (program_mode == 0) {
-        SortColor = Color::blue;
+        if (selected_auton.first == RED_RIGHT || selected_auton.first == RED_LEFT) {
+            SortColor = pros::Color::blue;
+        } else if (selected_auton.first == BLUE_RIGHT || selected_auton.first == BLUE_LEFT) {
+            SortColor = pros::Color::red;
+        } else {
+            SortColor = pros::Color::black; // sort none
+        }
         //pros::Task d_color_sort         (ColorSort);
+
         pros::Task d_drivetrain_control (DrivetrainControl);
         pros::Task d_intake_control     (IntakeControl);
         pros::Task d_storage_control    (StorageControl);
         pros::Task d_loader_control     (LoaderControl);
+
+        pros::Task d_controller_task    (controller_print);
     } else if (program_mode == 1) {
         chassis.setPose(0, 0, 0);
 

@@ -26,17 +26,20 @@ bool StorageDrain = false;
 void IntakeControl() {
     while (true) {
         if (INTAKE_TO_STORAGE) {
+            // storage: spin intake forwards, spin front forwards, do not drain, set hood to storage
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
             intake_back.brake();
             if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_LOW_GOAL) {
+            // low goal: spin intake reverse, spin front reverse, drain if draining, set hood to storage
             intake_bottom.move_voltage(-12000);
             intake_front.move_voltage(-12000);
             if (StorageDrain) intake_back.move_voltage(12000);
             else intake_back.brake();
             if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_MID_GOAL) {
+            // mid goal: spin intake forwards, spin front reverse, drain if draining, set hood to storage
             // figure out some way to get it to go to high goal if it gets color sorted here
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(-12000);
@@ -44,6 +47,7 @@ void IntakeControl() {
             else intake_back.brake();
             if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_HIGH_GOAL) {
+            // high goal: spin intake forwards, spin front forwards, drain if draining, set hood to high goal
             intake_bottom.move_voltage(12000);
             if (!ColorStop) intake_front.move_voltage(12000);
             if (StorageDrain) intake_back.move_voltage(12000);
@@ -54,7 +58,6 @@ void IntakeControl() {
             intake_front.brake();
             intake_back.brake();
         }
-        
         pros::delay(10);
     }
 }

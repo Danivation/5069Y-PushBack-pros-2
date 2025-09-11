@@ -14,7 +14,7 @@ pros::Motor intake_back(17);
 pros::Motor intake_bottom(-18);
 pros::Motor intake_front(-20);
 pros::adi::Pneumatics loader_piston('a', false);
-pros::adi::Pneumatics hood_piston('b', true);
+pros::adi::Pneumatics hood_piston('b', false);
 
 /**
  * Lemlib configuration
