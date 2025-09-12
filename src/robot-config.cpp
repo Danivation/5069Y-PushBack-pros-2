@@ -19,8 +19,8 @@ pros::adi::Pneumatics hood_piston('b', false);
 /**
  * Lemlib configuration
  */
-lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -5.5);
-lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -0.8);
+lemlib::TrackingWheel horizontal_tracker(&horizontal_rotation, lemlib::Omniwheel::NEW_275, -7.35);
+lemlib::TrackingWheel vertical_tracker(&vertical_rotation, lemlib::Omniwheel::NEW_275, -1.55);
 // drivetrain configuration:   left      right   track width       wheel size         rpm  horizontal drift (2 for omnis)
 lemlib::Drivetrain drivetrain(&left_mg, &right_mg, 11.75, lemlib::Omniwheel::NEW_325, 450, 2);
 // tracker wheel configuration
