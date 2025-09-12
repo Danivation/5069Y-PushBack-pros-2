@@ -134,10 +134,9 @@ void opcontrol() {
 
         intake_bottom.move(127);
         intake_back.move(-127);
-        chassis.moveToPose(22, -23, 14.5, 1500, {.maxSpeed = 90});
+        chassis.moveToPose(14, -14, 315, 2500, {.lead = 0.5, .maxSpeed = 90});
+        chassis.waitUntilDone();
 
-        chassis.turnToHeading(315, 1000);
-        chassis.moveToPoint(14, -14, 1000);
         intake_bottom.move(-127);
         intake_back.move(127);
     }
