@@ -1,5 +1,5 @@
 #include "main.h"
-const int program_mode = 0; // 0 = default (competition mode, driver first), 1 = testing (auton first)
+const int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first)
 
 /**
  * auton selector flow:
@@ -130,9 +130,15 @@ void opcontrol() {
 
         pros::Task d_controller_task    (controller_print);
     } else if (program_mode == 1) {
-        chassis.setPose(0, 0, 0);
+        chassis.setPose(16, -48, 14.5);
 
-        //chassis.follow(curve_txt, 10, 10000);
-        chassis_small.moveToPose(-36, 24, 270, 10000, {.horizontalDrift = 2, .lead = 0.6});
+        intake_bottom.move(127);
+        intake_back.move(-127);
+        chassis.moveToPose(22, -23, 14.5, 1500, {.maxSpeed = 90});
+
+        chassis.turnToHeading(315, 1000);
+        chassis.moveToPoint(14, -14, 1000);
+        intake_bottom.move(-127);
+        intake_back.move(127);
     }
 }

@@ -29,7 +29,8 @@ void IntakeControl() {
             // storage: spin intake forwards, spin front forwards, do not drain, set hood to storage
             intake_bottom.move(127);
             if (!ColorStop) intake_front.move(127);
-            intake_back.brake();
+            if (false) intake_back.move(-127);
+            else intake_back.brake();
             if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_LOW_GOAL) {
             // low goal: spin intake reverse, spin front reverse, drain if draining, set hood to storage
