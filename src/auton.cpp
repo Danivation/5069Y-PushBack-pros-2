@@ -34,14 +34,19 @@ void spin_mid_goal() {
 
 // 7.8, -25.2
 void auton_none() {
-    chassis.setPose(-16, -46, 341);
+    chassis.setPose(-15, -45, 341);
 
     intake_bottom.move(127);
     intake_back.move(-127);
-    chassis.moveToPose(-14, -14, 45, 2500, {.lead = 0.6, .maxSpeed = 90});
+    chassis.moveToPose(-9.3, -12.3, 45, 2500, {.lead = 0.65, .maxSpeed = 90});
+
+    pros::delay(800);
+    loader_piston.extend();
 
     chassis.waitUntilDone();
-    spin_mid_goal();
+    intake_bottom.move(90);
+    intake_front.move(-50);
+    intake_back.move(127);
 }
 
 void auton_red_right_1() {

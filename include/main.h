@@ -95,7 +95,7 @@ extern lemlib::Chassis chassis_big;
 extern lemlib::Chassis chassis_mtp;
 extern CustomChassis chassis;
 
-#define waitUntil(condition)    \
+#define waitUntilCondition(condition)    \
   do {                          \
     pros::delay(5);             \
   } while (!(condition))

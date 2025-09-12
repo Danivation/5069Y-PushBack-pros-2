@@ -65,16 +65,16 @@ void IntakeControl() {
 
 void StorageControl() {
     while (true) {
-        waitUntil(!STORAGE_DRAIN_TOGGLE);
-        waitUntil(STORAGE_DRAIN_TOGGLE);
+        waitUntilCondition(!STORAGE_DRAIN_TOGGLE);
+        waitUntilCondition(STORAGE_DRAIN_TOGGLE);
         StorageDrain = !StorageDrain;
     }
 }
 
 void LoaderControl() {
     while (true) {
-        waitUntil(!LOADER_TOGGLE);
-        waitUntil(LOADER_TOGGLE);
+        waitUntilCondition(!LOADER_TOGGLE);
+        waitUntilCondition(LOADER_TOGGLE);
         loader_piston.toggle();
     }
 }

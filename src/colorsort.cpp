@@ -33,7 +33,7 @@ int BlockRelease() {
         pros::Color DetectedColor = get_color(&optical_block);
         ColorStop = true;
         intake_front.move_voltage(-12000);
-        waitUntil(optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
+        waitUntilCondition(optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
         pros::delay(200);
         ColorStop = false;
     }
