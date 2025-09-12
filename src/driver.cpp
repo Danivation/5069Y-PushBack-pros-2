@@ -22,20 +22,33 @@ void DrivetrainControl() {
     }
 }
 
+bool AJStop = false;
+void AntiJam() {
+    while (true) {
+        if (intake_front.get_torque() >= 1) {
+            int direction = intake_front.get_direction();
+            AJStop = true;
+            intake_front.move(-127);
+            pros::delay(300);
+            AJStop = false;
+        }
+    }
+}
+
 bool StorageDrain = false;
 void IntakeControl() {
     while (true) {
         if (INTAKE_TO_STORAGE) {
             // storage: spin intake forwards, spin front forwards, do not drain, set hood to storage
             intake_bottom.move(127);
-            if (!ColorStop) intake_front.move(127);
+            if (!ColorStop && !AJStop) intake_front.move(127);
             if (false) intake_back.move(-127);
             else intake_back.brake();
             if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_LOW_GOAL) {
             // low goal: spin intake reverse, spin front reverse, drain if draining, set hood to storage
             intake_bottom.move(-127);
-            intake_front.move(-127);
+            if (!AJStop) intake_front.move(-127);
             if (StorageDrain) intake_back.move(127);
             else intake_back.brake();
             //if (!hood_piston.is_extended()) hood_piston.extend();
@@ -43,14 +56,14 @@ void IntakeControl() {
             // mid goal: spin intake forwards, spin front reverse, drain if draining, set hood to storage
             // figure out some way to get it to go to high goal if it gets color sorted here
             intake_bottom.move(127);
-            if (!ColorStop) intake_front.move(-127);
+            if (!ColorStop && !AJStop) intake_front.move(-127);
             if (StorageDrain) intake_back.move(127);
             else intake_back.brake();
             //if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_HIGH_GOAL) {
             // high goal: spin intake forwards, spin front forwards, drain if draining, set hood to high goal
             intake_bottom.move(127);
-            if (!ColorStop) intake_front.move(127);
+            if (!ColorStop && !AJStop) intake_front.move(127);
             if (StorageDrain) intake_back.move(127);
             else intake_back.brake();
             if (hood_piston.is_extended()) hood_piston.retract();

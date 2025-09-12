@@ -1,5 +1,5 @@
 #include "main.h"
-int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first)
+int program_mode = 0; // 0 = default (competition mode, driver first), 1 = testing (auton first)
 
 /**
  * auton selector flow:
