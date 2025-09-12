@@ -130,9 +130,15 @@ void opcontrol() {
 
         pros::Task d_controller_task    (controller_print);
     } else if (program_mode == 1) {
-        chassis.setPose(0, 0, 0);
+        chassis.setPose(16, -48, 14.5);
 
-        chassis.turnToHeading(90, 1000);
-        chassis.turnToHeading(180, 1000);
+        intake_bottom.move(127);
+        intake_back.move(-127);
+        chassis.moveToPose(22, -23, 14.5, 1500, {.maxSpeed = 90});
+
+        chassis.turnToHeading(315, 1000);
+        chassis.moveToPoint(14, -14, 1000);
+        intake_bottom.move(-127);
+        intake_back.move(127);
     }
 }
