@@ -26,16 +26,22 @@ const std::vector<auton_descriptor_t> blue_left_autons = {
 };
 const auton_descriptor_t skills_auton = {"Skills", "0 points", auton_skills};
 
+void spin_mid_goal() {
+    intake_bottom.move(127);
+    intake_front.move(-127);
+    intake_back.move(127);
+}
+
+// 7.8, -25.2
 void auton_none() {
-    chassis.setPose(16.5, -48.5, 13);
+    chassis.setPose(-16, -46, 341);
 
     intake_bottom.move(127);
     intake_back.move(-127);
-    chassis.moveToPose(14, -14, 315, 2500, {.lead = 0.5, .maxSpeed = 90});
+    chassis.moveToPose(-14, -14, 45, 2500, {.lead = 0.6, .maxSpeed = 90});
 
     chassis.waitUntilDone();
-    intake_bottom.move(-127);
-    intake_back.move(127);
+    spin_mid_goal();
 }
 
 void auton_red_right_1() {

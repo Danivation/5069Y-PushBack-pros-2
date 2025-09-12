@@ -1,5 +1,5 @@
 #include "main.h"
-int program_mode = 0; // 0 = default (competition mode, driver first), 1 = testing (auton first)
+int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first)
 
 /**
  * auton selector flow:
@@ -33,17 +33,18 @@ void screen_print() {
 void controller_print() {
     master.clear();
     while (true) {
-        master.print(0, 0, "I: %.2f", reduce_0_to_360(chassis.getPose().theta));
+        master.print(0, 0, "(%3.2f, %3.2f, %3.2f)", chassis.getPose().x, chassis.getPose().y, reduce_0_to_360(chassis.getPose().theta));
         pros::delay(50);
         master.print(1, 0, "%s", StorageDrain ? "Draining" : "Intaking");
         pros::delay(50);
-        master.print(2, 0, "B: %d%%", pros::battery::get_capacity());
+        master.print(2, 0, "B: %.2f%%", pros::battery::get_capacity());
         pros::delay(50);
     }
 }
 
 void initialize() {
     imu_1.set_data_rate(5);
+    imu_1.set_rotation(0);
     right_mg.set_brake_mode_all(pros::MotorBrake::coast);
     left_mg.set_brake_mode_all(pros::MotorBrake::coast);
     intake_bottom.set_brake_mode(pros::MotorBrake::brake);
@@ -51,6 +52,8 @@ void initialize() {
     intake_front.set_brake_mode(pros::MotorBrake::brake);
     optical_block.set_led_pwm(100);
     optical_block.set_integration_time(5);
+    horizontal_rotation.reset_position();
+    vertical_rotation.reset_position();
 
     if (program_mode == 0) {
         // set up lvgl auton selector
@@ -63,7 +66,10 @@ void initialize() {
     
         pros::lcd::print(0, "Calibrating...");
         chassis.calibrate();
-        chassis.setPose(0, 0, reduce_0_to_360(imu_1.get_rotation()));
+        imu_1.set_rotation(0);
+        horizontal_rotation.reset_position();
+        vertical_rotation.reset_position();
+        chassis.setPose(0, 0, 0);
 
         // print stuff to the brain screen and controller
         pros::Task screen_task(screen_print);
@@ -78,6 +84,9 @@ void competition_initialize() {
 
     pros::lcd::print(0, "Calibrating...");
     chassis.calibrate();
+    imu_1.set_rotation(0);
+    horizontal_rotation.reset_position();
+    vertical_rotation.reset_position();
 
     if (program_mode == 0) {
         selected_auton = get_selected_auton();
@@ -110,6 +119,7 @@ void autonomous() {
 
 void opcontrol() {
     //program_mode = 0;
+    //chassis.setPose(0, 0, 0);
     if (program_mode == 0) {
         SortColor = [&] -> pros::Color {
             if (selected_auton.first == RED_RIGHT || selected_auton.first == RED_LEFT) {
