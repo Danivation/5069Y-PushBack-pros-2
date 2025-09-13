@@ -28,7 +28,7 @@ pros::Color get_color(pros::Optical* sensor) {
     }
 }
 
-void BlockRelease(void* param) {
+void BlockRelease() {
     printf("releasing block\n");
     if (ColorSortEnabled) {
         ColorStop = true;
@@ -59,7 +59,7 @@ void BlockRelease(void* param) {
  * 2 (driver long goal): sorted blocks go out of the long goal area, for when we are scoring in the middle goal
  * 3 (auton): sorted blocks go back into storage
  */
-void ColorSort(int mode = 0) {
+void ColorSort() {
     const int detection_cycle_time = 20;    // 10 ms * 10 cycles = 100 ms between an object being detected and the color being confirmed
     // todo: make it not recheck the color if the same object is still there or do make it recheck or something
     const int detection_threshold = 10;      // 7/10 of the cycles have to be the correct color for it to count
@@ -87,7 +87,7 @@ void ColorSort(int mode = 0) {
         if (object_streak >= detection_cycle_time) {
             if (detection_strength >= detection_threshold) {
                 printf("block detected with strength %i\n", detection_strength);
-                pros::Task release1(BlockRelease, (void*)mode);
+                pros::Task release1(BlockRelease);
             } else {
                 printf("block detected with strength %i but not released\n", detection_strength);
             }
