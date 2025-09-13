@@ -25,13 +25,18 @@ void DrivetrainControl() {
 bool AJStop = false;
 void AntiJam() {
     while (true) {
-        if (intake_front.get_torque() >= 1) {
-            int direction = intake_front.get_direction();
-            AJStop = true;
-            intake_front.move(-127);
-            pros::delay(300);
-            AJStop = false;
+        if (fabs(intake_bottom.get_torque()) >= 0.5) {
+            pros::delay(100);
+            if (fabs(intake_bottom.get_torque()) >= 0.5) {
+                int direction = intake_bottom.get_direction();
+                AJStop = true;
+                pros::delay(50);
+                intake_bottom.move(-127);
+                pros::delay(300);
+                AJStop = false;
+            }
         }
+        pros::delay(10);
     }
 }
 

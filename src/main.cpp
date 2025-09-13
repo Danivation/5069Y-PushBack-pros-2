@@ -1,5 +1,5 @@
 #include "main.h"
-int program_mode = 0; // 0 = default (competition mode, driver first), 1 = testing (auton first)
+int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first)
 
 /**
  * auton selector flow:
@@ -24,6 +24,8 @@ void screen_print() {
             optical_block.get_rgb().blue,
             optical_block.get_rgb().brightness
         );
+
+        pros::lcd::print(7, "%f", intake_bottom.get_torque());
 
         // delay to save resources
         pros::delay(100);
@@ -118,7 +120,7 @@ void autonomous() {
 }
 
 void opcontrol() {
-    //program_mode = 0;
+    program_mode = 0;
     //chassis.setPose(0, 0, 0);
     if (program_mode == 0) {
         SortColor = [&] -> pros::Color {
@@ -131,6 +133,7 @@ void opcontrol() {
             }
         }();
         //pros::Task d_color_sort         (ColorSort);
+        pros::Task d_anti_jam           (AntiJam);
 
         pros::Task d_drivetrain_control (DrivetrainControl);
         pros::Task d_intake_control     (IntakeControl);
