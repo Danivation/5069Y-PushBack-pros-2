@@ -2,4 +2,6 @@
 
 extern pros::Color SortColor;
 extern bool ColorStop;
-void ColorSort();
+extern bool ColorSortEnabled;
+extern int ColorSortMode;
+void ColorSort(int mode = 0);

@@ -66,8 +66,8 @@ float convert_mps_to_rpm() {
 }
 
 void setInertial(float angle) {
-    imu_1.set_rotation(angle);
-    imu_1.set_heading(angle);
+    // imu_1.set_rotation(angle);
+    // imu_1.set_heading(angle);
 }
 
 float trueHeading() {

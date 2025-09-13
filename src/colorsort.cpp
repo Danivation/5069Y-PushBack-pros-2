@@ -1,12 +1,16 @@
 #include "main.h"
 
-bool ColorLock = false;
-
-/*
- * PUSH BACK COLOR SORT
- * block will pass by color sensor
- * when it does activate trapdoor after a certain amt of time and for a certain duration (no need for distance sensor, use color sensor's distance)
-**/
+/**
+ * COLOR SORT MODES
+ * 
+ * 1 (driver default): sorted blocks go out of the middle goal area
+ * 2 (driver long goal): sorted blocks go out of the long goal area, for when we are scoring in the middle goal
+ * 3 (auton): sorted blocks go back into storage
+ */
+int ColorSortMode = 1;
+bool ColorSortEnabled = true;
+bool ColorStop = false;
+pros::Color SortColor = Color::white;
 
 pros::Color get_color(pros::Optical* sensor) {
     float hue = sensor->get_hue();
@@ -24,24 +28,38 @@ pros::Color get_color(pros::Optical* sensor) {
     }
 }
 
-bool ColorStop;
-pros::Color CurrentColor;
-int BlockRelease() {
-    pros::delay(100);
-    if (!ColorLock) {
-        std::cout << "releasing block\n";
-        pros::Color DetectedColor = get_color(&optical_block);
+void BlockRelease(void* param) {
+    printf("releasing block\n");
+    if (ColorSortEnabled) {
         ColorStop = true;
-        intake_front.move_voltage(-12000);
-        waitUntilCondition(optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
+        pros::Color DetectedColor = get_color(&optical_block);
+        pros::delay(10);
+        if (ColorSortMode == 1) {    // mode 1
+            pros::delay(100);
+            intake_front.move(-127);
+        } else if (ColorSortMode == 2) {
+            intake_front.move(127);
+            pros::delay(400);
+            hood_piston.retract();
+        } else if (ColorSortMode == 3) {
+            intake_front.move(127);
+            pros::delay(400);
+            hood_piston.extend();
+        }
+        //waitUntilCondition(optical_block.get_proximity() < 50 || get_color(&optical_block) != DetectedColor);
         pros::delay(200);
         ColorStop = false;
     }
-    return 1;
 }
 
-pros::Color SortColor = Color::white;
-void ColorSort() {
+/**
+ * COLOR SORT MODES
+ * 
+ * 1 (driver default): sorted blocks go out of the middle goal area
+ * 2 (driver long goal): sorted blocks go out of the long goal area, for when we are scoring in the middle goal
+ * 3 (auton): sorted blocks go back into storage
+ */
+void ColorSort(int mode = 0) {
     const int detection_cycle_time = 20;    // 10 ms * 10 cycles = 100 ms between an object being detected and the color being confirmed
     // todo: make it not recheck the color if the same object is still there or do make it recheck or something
     const int detection_threshold = 10;      // 7/10 of the cycles have to be the correct color for it to count
@@ -69,7 +87,7 @@ void ColorSort() {
         if (object_streak >= detection_cycle_time) {
             if (detection_strength >= detection_threshold) {
                 printf("block detected with strength %i\n", detection_strength);
-                pros::Task release1(BlockRelease);
+                pros::Task release1(BlockRelease, (void*)mode);
             } else {
                 printf("block detected with strength %i but not released\n", detection_strength);
             }

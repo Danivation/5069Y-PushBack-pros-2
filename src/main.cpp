@@ -1,5 +1,5 @@
 #include "main.h"
-int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first)
+int program_mode = 1; // 0 = default (competition mode, driver first), 1 = testing (auton first), 2 = drive testing (driver but calibrate and run test screen first)
 
 /**
  * auton selector flow:
@@ -60,7 +60,7 @@ void initialize() {
     if (program_mode == 0) {
         // set up lvgl auton selector
         lvgl_auton_selector(red_right_autons, red_left_autons, blue_right_autons, blue_left_autons, skills_auton);
-    } else if (program_mode == 1) {
+    } else if (program_mode == 1 || program_mode == 2) {
         // set up llemu screen
         lv_obj_clean(lv_screen_active()); // get rid of lvgl
         pros::lcd::initialize(); // initialze llemu
@@ -105,7 +105,7 @@ void competition_initialize() {
             auton_name = std::format("Skills ({})", selected_auton.second.score);
         }
         pros::lcd::print(0, "Auton: %s", auton_name);
-    } else if (program_mode == 1) {
+    } else if (program_mode == 1 || program_mode == 2) {
         pros::lcd::print(0, "Program is in testing mode.");
         pros::lcd::print(1, "Switch to competition mode to work with field control!");
     }
@@ -122,7 +122,7 @@ void autonomous() {
 void opcontrol() {
     program_mode = 0;
     //chassis.setPose(0, 0, 0);
-    if (program_mode == 0) {
+    if (program_mode == 0 || program_mode == 2) {
         SortColor = [&] -> pros::Color {
             if (selected_auton.first == RED_RIGHT || selected_auton.first == RED_LEFT) {
                 return pros::Color::blue;

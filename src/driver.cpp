@@ -45,33 +45,34 @@ void IntakeControl() {
     while (true) {
         if (INTAKE_TO_STORAGE) {
             // storage: spin intake forwards, spin front forwards, do not drain, set hood to storage
+            ColorSortMode = 1;
             intake_bottom.move(127);
             if (!ColorStop && !AJStop) intake_front.move(127);
             if (false) intake_back.move(-127);
             else intake_back.brake();
-            if (!hood_piston.is_extended()) hood_piston.extend();
+            if (!hood_piston.is_extended() && !ColorStop) hood_piston.extend();
         } else if (INTAKE_TO_LOW_GOAL) {
             // low goal: spin intake reverse, spin front reverse, drain if draining, set hood to storage
+            ColorSortMode = 1;
             intake_bottom.move(-127);
             if (!AJStop) intake_front.move(-127);
             if (StorageDrain) intake_back.move(127);
             else intake_back.brake();
-            //if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_MID_GOAL) {
             // mid goal: spin intake forwards, spin front reverse, drain if draining, set hood to storage
-            // figure out some way to get it to go to high goal if it gets color sorted here
+            ColorSortMode = 2;
             intake_bottom.move(127);
             if (!ColorStop && !AJStop) intake_front.move(-127);
             if (StorageDrain) intake_back.move(127);
             else intake_back.brake();
-            //if (!hood_piston.is_extended()) hood_piston.extend();
         } else if (INTAKE_TO_HIGH_GOAL) {
             // high goal: spin intake forwards, spin front forwards, drain if draining, set hood to high goal
+            ColorSortMode = 3;
             intake_bottom.move(127);
             if (!ColorStop && !AJStop) intake_front.move(127);
             if (StorageDrain) intake_back.move(127);
             else intake_back.brake();
-            if (hood_piston.is_extended()) hood_piston.retract();
+            if (hood_piston.is_extended() && !ColorStop) hood_piston.retract();
         } else {
             intake_bottom.brake();
             intake_front.brake();
